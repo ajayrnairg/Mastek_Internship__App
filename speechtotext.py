@@ -62,12 +62,12 @@ def print_result(result: speech.SpeechRecognitionResult):
     data = {"language_code": result.language_code, "transcript": best_alternative.transcript}
     return data
 
-def callspeech():
+def callspeech(lang_code):
     with open('microphone-results.flac', 'rb') as f:
         flac_data = f.read()
 
     config = speech.RecognitionConfig(
-        language_code=lan[0],
+        language_code=lang_code,
         enable_automatic_punctuation=True
     )
     audio = speech.RecognitionAudio(
@@ -79,10 +79,10 @@ def callspeech():
         return ans 
     else:
         print(ans[1])
-        print("Exiting")
+        print("Exiting STT")
         exit()
         
 
 
 recordaudio()
-callspeech()
+callspeech(lan[0])

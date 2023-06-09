@@ -20,23 +20,26 @@ def textcount(text):
 
 def text_to_wav(voice_name: str, text: str):
     language_code = "-".join(voice_name.split("-")[:2])
-    text_input = tts.SynthesisInput(text=text)
-    voice_params = tts.VoiceSelectionParams(
-        language_code=language_code, name=voice_name
-    )
-    audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
+    try:
+        text_input = tts.SynthesisInput(text=text)
+        voice_params = tts.VoiceSelectionParams(
+            language_code=language_code, name=voice_name
+        )
+        audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
 
-    client = tts.TextToSpeechClient()
-    response = client.synthesize_speech(
-        input=text_input,
-        voice=voice_params,
-        audio_config=audio_config,
-    )
+        client = tts.TextToSpeechClient()
+        response = client.synthesize_speech(
+            input=text_input,
+            voice=voice_params,
+            audio_config=audio_config,
+        )
 
-    with open("texttospeech.wav", "wb") as out:
-        out.write(response.audio_content)
-        textcount(text)
-        print("Generated speech saved to texttospeech.wav")
+        with open("texttospeech.wav", "wb") as out:
+            out.write(response.audio_content)
+            textcount(text)
+        return(1,"Successfully generated speech saved to texttospeech.wav")
+    except Exception as e:
+        return (0,e)
 
 test_text = "ഇന്ത്യ ഒരു രാജ്യമാണ്"
 text_to_wav(male_voice[5], test_text)
