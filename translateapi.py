@@ -42,10 +42,8 @@ def translate_text(target: str, text: str) -> dict:
     except Exception as e:
         return (0,e)
 
-test_text = "i have a question"
-result = translate_text(lan_ar[0], test_text)
-# if len(result["translatedText"]) != 0:
-#     textcount(test_text)
+if __name__=="__main__":
+    pass
 
 
 

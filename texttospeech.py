@@ -41,5 +41,5 @@ def text_to_wav(voice_name: str, text: str):
     except Exception as e:
         return (0,e)
 
-test_text = "ഇന്ത്യ ഒരു രാജ്യമാണ്"
-text_to_wav(male_voice[5], test_text)
+if __name__=="__main__":
+    pass

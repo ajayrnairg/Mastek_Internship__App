@@ -34,7 +34,7 @@ def speech_to_text(
     audio: speech.RecognitionAudio,
 ) -> speech.RecognizeResponse:
     try:
-        client = speech.SpeechClient.from_service_account_file('googlecloudke.json')
+        client = speech.SpeechClient.from_service_account_file('googlecloudkey.json')
 
         # Synchronous speech recognition request
         response = client.recognize(config=config, audio=audio)
@@ -83,6 +83,5 @@ def callspeech(lang_code):
         exit()
         
 
-
-recordaudio()
-callspeech(lan[0])
+if __name__=="__main__":
+    pass

@@ -13,7 +13,8 @@ if __name__=="__main__":
     for i in range(len(lan)):
         print(f"{i+1}: {lan[i]}")
     dest_lang=int(input("Please enter the destination language code's number in which you want the text to be translated to: "))-1
-    translated_txt=translate_text(lan[dest_lang], src_text_data[1].transcript)
+    print(src_text_data[1])
+    translated_txt=translate_text(lan[dest_lang], src_text_data[1]['transcript'])
     print("Text to Speech starts!!!")
     if (translated_txt[0]==1):
         gender=input("Enter B for male voice and A for female voice: ")
