@@ -34,10 +34,11 @@ def text_to_wav(voice_name: str, text: str):
             audio_config=audio_config,
         )
 
-        with open("texttospeech.wav", "wb") as out:
-            out.write(response.audio_content)
-            textcount(text)
-        return(1,"Successfully generated speech saved to texttospeech.wav")
+        # with open("texttospeech.wav", "wb") as out:
+        #     out.write(response.audio_content)
+        textcount(text)
+        
+        return(1,response)
     except Exception as e:
         return (0,e)
 

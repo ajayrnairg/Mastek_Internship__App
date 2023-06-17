@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+mastek_django/charactercount.txt
+mastek_django/totalbilledtime.txt
+mastek_django/tts_charactercount.txt
+mastek_django/googleapi/__pycache__
+mastek_django/googlecloudkey.json
+
 # Distribution / packaging
 .Python
 build/

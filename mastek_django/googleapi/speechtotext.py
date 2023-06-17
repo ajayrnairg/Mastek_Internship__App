@@ -46,9 +46,6 @@ def speech_to_text(
 
 def print_response(response: speech.RecognizeResponse):
     billcount(response.total_billed_time.seconds)
-    print(response)
-    print()
-    print()
     # print(type(response.results))
     return print_result(response.results[0])
 
@@ -81,6 +78,7 @@ def callspeech(lang_code):
         print(ans[1])
         print("Exiting STT")
         exit()
+
         
 
 if __name__=="__main__":

@@ -1,7 +1,7 @@
 import os 
 from google.cloud import translate_v2 as translate
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"googlecloudkey.json"
+
 
 lan_ar = ['hi', 'kn', 'ml', 'ta', 'te', 'en']
 
