@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
 
 import '../../../constants/image_strings.dart';
 import '../../../constants/sizes.dart';
@@ -7,7 +8,10 @@ import '../../../constants/text_strings.dart';
 class LoginFooterWidget extends StatelessWidget {
   const LoginFooterWidget({
     super.key,
+    required this.controller,
   });
+
+  final SignupLoginScreenController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class LoginFooterWidget extends StatelessWidget {
         ),
         const SizedBox(height: gFormHeight - 20.0),
         TextButton(
-          onPressed: () {},
+          onPressed: () {controller.goToSignupPageFunc();},
           child: Text.rich(
             TextSpan(
               text: gDontHaveAnAccount,

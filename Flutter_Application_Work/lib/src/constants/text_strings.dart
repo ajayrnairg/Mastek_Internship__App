@@ -1,4 +1,16 @@
 /* Generic Texts */
+const gAppName = "TransLang";
+const gNextButton = "Next";
+
+/* Mobile App Page Names */
+const String gChatScreenName = "Chat";
+const String gDirectChatScreenName = "Direct Chat";
+const String gGroupChatScreenName = "Group Chat";
+const String gTranslateScreenName = "Translate";
+
+
+
+
 const String gLogin = "Login";
 const String gSignup = "Signup";
 
@@ -48,3 +60,34 @@ const String gDontHaveAnAccount = "Don't Have An Account? ";
 const String gSignupTitle = "Get On Board!";
 const String gSignUpSubTitle = "Create your profile to start your Journey with us....";
 const String gAlreadyHaveAnAccount = "Already have an Account? ";
+
+
+/* Home Screen Text */
+const String gAccountEmail = "abcd@gmail.com";
+const String gAccountName = "Abcd Efgh";
+const String gLanguages = "Languages";
+const String gSettings = "Settings";
+const String gHelpCenter = "Help Center";
+const String gLogOut = "Log Out";
+const String gWelcome = "Welcome";
+
+const String gChat = "Chat";
+const String gDirectChat = "Group Chat";
+const String gGroupChat = "Direct Chat";
+const String gTranslate = "Translate";
+const String gHomeText = "What would you like to do ?";
+
+/* Direct Chat Screen Texts */
+
+const String gLangSelectionPage = "Language Selection";
+const String gChooseFirstLang = "Choose First Language";
+const String gFirstLang1 = "Hindi";
+const String gFirstLang2 = "English";
+const String gFirstLang3 = "Telugu";
+const String gFirstLang4 = "Kannada";
+
+const String gChooseSecondLang = "Choose Second Language";
+const String gSecondLang1 = "Hindi";
+const String gSecondLang2 = "English";
+const String gSecondLang3 = "Telugu";
+const String gSecondLang4 = "Kannada";

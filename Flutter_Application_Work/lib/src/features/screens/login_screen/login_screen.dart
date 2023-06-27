@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:rough_app/src/constants/image_strings.dart';
 import 'package:rough_app/src/constants/sizes.dart';
+import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
 import 'package:rough_app/src/features/screens/login_screen/login_footer_widget.dart';
 import 'package:rough_app/src/features/screens/login_screen/login_form_widget.dart';
 
@@ -12,6 +15,7 @@ class LogInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final signupLoginScreenController = Get.put(SignupLoginScreenController());
     final size = MediaQuery.of(context).size;
 
     return SafeArea(
@@ -27,14 +31,14 @@ class LogInScreen extends StatelessWidget {
                     size: size,
                     image: gWelcome_1_image,
                     title: gLoginTitle,
-                    subTitle: gLoginSubTitle),
+                    subTitle: gLoginSubTitle, controller: signupLoginScreenController),
 
                 /* Section - 2 */
-                LoginFormWidget(),
+                LoginFormWidget(controller: signupLoginScreenController),
 
                 /* Section - 3 */
 
-                LoginFooterWidget(),
+                LoginFooterWidget(controller: signupLoginScreenController),
               ],
             ),
           ),

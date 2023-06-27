@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
 
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
@@ -6,7 +7,9 @@ import '../../../constants/text_strings.dart';
 class SignupFormWidget extends StatelessWidget {
   const SignupFormWidget({
     super.key,
+    required this.controller,
   });
+  final SignupLoginScreenController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class SignupFormWidget extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {controller.goToLoginPageFunc();},
                 child: Text(gSignup.toUpperCase()),
               ),
             ),

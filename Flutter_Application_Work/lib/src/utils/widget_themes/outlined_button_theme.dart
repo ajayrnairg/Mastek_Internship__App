@@ -8,7 +8,9 @@ class GOutlinedButtonTheme {
 
   static final lightOutlinedButtonTheme = OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      shape: RoundedRectangleBorder(),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
       foregroundColor: gSecondaryColor,
       side: BorderSide(color: gSecondaryColor),
       padding: EdgeInsets.symmetric(vertical: gButtonHeight),
@@ -17,7 +19,9 @@ class GOutlinedButtonTheme {
 
   static final darkOutlinedButtonTheme = OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      shape: RoundedRectangleBorder(),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
       foregroundColor: gWhiteColor,
       side: BorderSide(color: gWhiteColor),
       padding: EdgeInsets.symmetric(vertical: gButtonHeight),

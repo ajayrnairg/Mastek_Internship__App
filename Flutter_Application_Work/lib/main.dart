@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:rough_app/src/features/screens/direct_chat_screen/direct_chat_screen.dart';
+import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
 import 'package:rough_app/src/features/screens/splash_screen/splash_screen.dart';
 import 'package:rough_app/src/utils/theme.dart';
 
@@ -14,7 +16,9 @@ class MyApp extends StatelessWidget {
       theme: GAppTheme.lightTheme,
       darkTheme: GAppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: SplashScreen(),
+      // home: SplashScreen(),
+      // home: HomeScreen(),
+      home: DirectChatScreen(),
     );
 
   }

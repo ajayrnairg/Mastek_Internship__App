@@ -30,5 +30,16 @@ const String gGoogleLogoImage = "assets/logo/google-logo.png";
 
 /* Dashboard Screen */
 
-const String user_icon_1_image = "assets/images/user_icon_1.jpg";
+// const String user_icon_1_image = "assets/images/user_icon_1.jpg";
+
+
+/* Home Screen */
+
+const String gUser_icon_1_image = "assets/images/home_images/user_1.jpg";
+const String gUser_icon_2_image = "assets/images/home_images/user_2.png";
+const String gChat_icon_image = "assets/images/home_images/chat_icon.png";
+const String gDirectChat_icon_image = "assets/images/home_images/direct_chat_icon.png";
+const String gGroupChat_icon_image = "assets/images/home_images/group_chat_icon.png";
+const String gTranslate_icon_image = "assets/images/home_images/translate_icon.png";
+
 

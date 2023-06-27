@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
 
 import '../../../constants/image_strings.dart';
 import '../../../constants/text_strings.dart';
@@ -6,8 +7,10 @@ import '../../../constants/text_strings.dart';
 class SignupFooterWidget extends StatelessWidget {
   const SignupFooterWidget({
     super.key,
+    required this.controller,
   });
 
+  final SignupLoginScreenController controller;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +28,7 @@ class SignupFooterWidget extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {controller.goToLoginPageFunc();},
           child: Text.rich(
             TextSpan(
               children: [

@@ -13,6 +13,7 @@ class GAppTheme {
     outlinedButtonTheme: GOutlinedButtonTheme.lightOutlinedButtonTheme,
     elevatedButtonTheme: GElevatedButtonTheme.lightElevatedButtonTheme,
     inputDecorationTheme: GTextFormFieldTheme.lightInputDecorationTheme,
+
   );
 
   static ThemeData darkTheme = ThemeData(
