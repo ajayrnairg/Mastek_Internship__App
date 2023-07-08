@@ -4,7 +4,6 @@ import 'package:rough_app/src/features/controllers/signup_login_screen_controlle
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
 
-
 class LoginFormWidget extends StatelessWidget {
   const LoginFormWidget({
     super.key,
@@ -22,6 +21,7 @@ class LoginFormWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
+              style: Theme.of(context).textTheme.titleSmall,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.person_outline_outlined),
                 labelText: gEmail,
@@ -31,6 +31,7 @@ class LoginFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(
+              style: Theme.of(context).textTheme.titleSmall,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.fingerprint),
                 labelText: gPassword,
@@ -53,7 +54,9 @@ class LoginFormWidget extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {controller.goToHomePageFunc();},
+                onPressed: () {
+                  controller.goToHomePageFunc();
+                },
                 child: Text(
                   gLogin.toUpperCase(),
                 ),

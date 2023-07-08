@@ -29,7 +29,7 @@ class HomeListTileWidget extends StatelessWidget {
       ),
       title: Align(
           alignment: Alignment.centerLeft,
-          child: Text(tileTitle, style: Theme.of(context).textTheme.headlineMedium)),
+          child: Text(tileTitle, style: Theme.of(context).textTheme.titleLarge)),
       onTap: () {controller.goToPageFunc(key);},
     );
   }

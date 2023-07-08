@@ -25,7 +25,7 @@ class FormHeaderWidget extends StatelessWidget {
           image: AssetImage(image),
           height: size.height * 0.2,
         ),
-        Text(title, style: Theme.of(context).textTheme.headlineMedium),
+        Text(title, style: Theme.of(context).textTheme.titleLarge),
         Text(subTitle, style: Theme.of(context).textTheme.titleSmall),
       ],
     );

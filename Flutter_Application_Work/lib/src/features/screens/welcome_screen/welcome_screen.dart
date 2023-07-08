@@ -34,15 +34,21 @@ class WelcomeScreen extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  gWelcomeTitle,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+                Padding(
+                  padding: const EdgeInsets.all(gSmallSpace),
+                  child: Text(
+                    gWelcomeTitle,
+                    style: Theme.of(context).textTheme.displayLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                Text(
-                  gWelcomeSubTitle,
-                  style: Theme.of(context).textTheme.titleSmall,
-                  textAlign: TextAlign.center,
+                Padding(
+                  padding: const EdgeInsets.all(gSmallSpace),
+                  child: Text(
+                    gWelcomeSubTitle,
+                    style: Theme.of(context).textTheme.titleSmall,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
@@ -53,7 +59,9 @@ class WelcomeScreen extends StatelessWidget {
                     onPressed: () {
                       welcomeScreenController.logInFunc();
                     },
-                    child: Text(gLogin),
+                    child: Text(
+                      gLogin,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10.0),
@@ -62,7 +70,9 @@ class WelcomeScreen extends StatelessWidget {
                     onPressed: () {
                       welcomeScreenController.signUpFunc();
                     },
-                    child: Text(gSignup),
+                    child: Text(
+                      gSignup,
+                    ),
                   ),
                 ),
               ],

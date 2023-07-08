@@ -11,6 +11,7 @@ class GElevatedButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),
+      textStyle: TextStyle(fontSize: 16.0),
       foregroundColor: gWhiteColor,
       backgroundColor: gSecondaryColor,
       side: BorderSide(color: gSecondaryColor),
@@ -26,6 +27,7 @@ class GElevatedButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),
+      textStyle: TextStyle(fontSize: 16.0),
       foregroundColor: gSecondaryColor,
       backgroundColor: gWhiteColor,
       side: BorderSide(color: gSecondaryColor),

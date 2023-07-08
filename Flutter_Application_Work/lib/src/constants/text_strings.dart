@@ -32,7 +32,7 @@ const String gOnBoardingTitle2 = "Ease Learning";
 const String gOnBoardingSubTitle2 = "An easy way to learn different languages.";
 const String gOnBoardingCounter2 = "2/4";
 
-const String gOnBoardingTitle3 = "Communication Made Easy";
+const String gOnBoardingTitle3 = "Easy Communication";
 const String gOnBoardingSubTitle3 =
     "Communication made easy and simplified using TransLang App.";
 const String gOnBoardingCounter3 = "3/4";

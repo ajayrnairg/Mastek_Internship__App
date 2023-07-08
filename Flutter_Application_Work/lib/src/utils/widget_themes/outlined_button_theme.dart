@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rough_app/src/constants/colors.dart';
 
 import '../../constants/sizes.dart';
@@ -11,6 +12,7 @@ class GOutlinedButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),
+      textStyle: TextStyle(fontSize: 16.0),
       foregroundColor: gSecondaryColor,
       side: BorderSide(color: gSecondaryColor),
       padding: EdgeInsets.symmetric(vertical: gButtonHeight),
@@ -22,6 +24,7 @@ class GOutlinedButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),
+      textStyle: TextStyle(fontSize: 16.0),
       foregroundColor: gWhiteColor,
       side: BorderSide(color: gWhiteColor),
       padding: EdgeInsets.symmetric(vertical: gButtonHeight),

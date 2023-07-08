@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:rough_app/src/features/screens/direct_chat_screen/direct_chat_screen.dart';
 import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
+import 'package:rough_app/src/features/screens/rough_screen/rough_screen.dart';
 import 'package:rough_app/src/features/screens/splash_screen/splash_screen.dart';
 import 'package:rough_app/src/utils/theme.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       // home: SplashScreen(),
       // home: HomeScreen(),
       home: DirectChatScreen(),
+      // home: RoughScreen(title: "ABCD"),
     );
 
   }

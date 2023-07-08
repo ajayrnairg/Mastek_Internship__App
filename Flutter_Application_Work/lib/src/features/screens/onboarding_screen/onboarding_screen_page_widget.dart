@@ -31,13 +31,13 @@ class OnBoardingPageWidget extends StatelessWidget {
               Text(model.title,
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center),
-              Text(model.subTitle, textAlign: TextAlign.center),
+              Text(model.subTitle, style: Theme.of(context).textTheme.titleMedium ,textAlign: TextAlign.center),
               SizedBox(
                 height: 88.0,
               ),
             ],
           ),
-          Text(model.counterText),
+          Text(model.counterText, style: Theme.of(context).textTheme.titleSmall,),
         ],
       ),
     );

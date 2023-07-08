@@ -15,8 +15,8 @@ class DrawerWidget extends StatelessWidget {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(gAccountName),
-            accountEmail: Text(gAccountEmail),
+            accountName: Text(gAccountName, style: Theme.of(context).textTheme.headlineMedium,),
+            accountEmail: Text(gAccountEmail, style: Theme.of(context).textTheme.titleMedium,),
             currentAccountPicture: CircleAvatar(
               foregroundImage: AssetImage(gUser_icon_2_image),
             ),
@@ -25,19 +25,19 @@ class DrawerWidget extends StatelessWidget {
             children: [
               ListTile(
                 leading: Icon(Icons.language),
-                title: Text(gLanguages),
+                title: Text(gLanguages, style: Theme.of(context).textTheme.titleSmall,),
               ),
               ListTile(
                 leading: Icon(Icons.settings),
-                title: Text(gSettings),
+                title: Text(gSettings, style: Theme.of(context).textTheme.titleSmall,),
               ),
               ListTile(
                 leading: Icon(Icons.help_center),
-                title: Text(gHelpCenter),
+                title: Text(gHelpCenter, style: Theme.of(context).textTheme.titleSmall,),
               ),
               ListTile(
                 leading: Icon(Icons.logout),
-                title: Text(gLogOut),
+                title: Text(gLogOut, style: Theme.of(context).textTheme.titleSmall,),
               ),
             ],
           ),
