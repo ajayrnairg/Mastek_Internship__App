@@ -4,6 +4,7 @@ import 'package:rough_app/src/features/controllers/signup_login_screen_controlle
 import '../../../constants/image_strings.dart';
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
+import '../../../utils/services/auth.dart';
 
 class LoginFooterWidget extends StatelessWidget {
   const LoginFooterWidget({
@@ -25,17 +26,21 @@ class LoginFooterWidget extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
-            icon: Image(
+            icon: const Image(
               image: AssetImage(gGoogleLogoImage),
               width: 20.0,
             ),
-            onPressed: () {},
-            label: Text(gSignInWithGoogle),
+            onPressed: () {
+              AuthMethods().signInWithGoogle(context);
+            },
+            label: const Text(gSignInWithGoogle),
           ),
         ),
         const SizedBox(height: gFormHeight - 20.0),
         TextButton(
-          onPressed: () {controller.goToSignupPageFunc();},
+          onPressed: () {
+            controller.goToSignupPageFunc();
+          },
           child: Text.rich(
             TextSpan(
               text: gDontHaveAnAccount,

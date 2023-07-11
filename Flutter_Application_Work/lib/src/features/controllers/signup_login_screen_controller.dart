@@ -14,15 +14,15 @@ class SignupLoginScreenController extends GetxController {
 
 
   goToLoginPageFunc(){
-    Get.to(() => LogInScreen());
+    Get.off(() => const LogInScreen());
   }
 
   goToSignupPageFunc(){
-    Get.to(() => SignUpScreen());
+    Get.off(() => const SignUpScreen());
   }
 
   goToHomePageFunc(){
-    Get.to(() => HomeScreen());
+    Get.offAll(() => const HomeScreen());
   }
 
 }

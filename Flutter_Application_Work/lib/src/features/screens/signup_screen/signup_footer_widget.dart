@@ -15,18 +15,7 @@ class SignupFooterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("OR"),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Image(
-              image: AssetImage(gGoogleLogoImage),
-              width: 20.0,
-            ),
-            label: Text(gSignInWithGoogle.toUpperCase()),
-          ),
-        ),
+
         TextButton(
           onPressed: () {controller.goToLoginPageFunc();},
           child: Text.rich(

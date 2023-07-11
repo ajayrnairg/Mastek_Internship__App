@@ -48,6 +48,7 @@ class ReceiveChatMessageWidget extends StatelessWidget {
               ),
             ),
             onTap: () {},
+
           ),
         ],
       ),

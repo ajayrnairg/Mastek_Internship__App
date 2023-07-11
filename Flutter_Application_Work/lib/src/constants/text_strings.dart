@@ -72,8 +72,8 @@ const String gLogOut = "Log Out";
 const String gWelcome = "Welcome";
 
 const String gChat = "Chat";
-const String gDirectChat = "Group Chat";
-const String gGroupChat = "Direct Chat";
+const String gDirectChat = "Direct Chat";
+const String gGroupChat = "Group Chat";
 const String gTranslate = "Translate";
 const String gHomeText = "What would you like to do ?";
 

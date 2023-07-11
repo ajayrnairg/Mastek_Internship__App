@@ -14,6 +14,8 @@ class SplashScreenController extends GetxController {
   Future startAnimation() async {
     await Future.delayed(Duration(milliseconds: 200));
     animate.value = true;
+
+
     await Future.delayed(Duration(milliseconds: 6000));
     // Get.to(() => WelcomeScreen());
     Get.to(() => OnboardingScreen());

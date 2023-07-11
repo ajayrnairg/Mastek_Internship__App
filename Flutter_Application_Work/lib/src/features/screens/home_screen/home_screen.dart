@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("TransLang"),
+        title: Text("Multi-Language Mentor"),
       ),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(
