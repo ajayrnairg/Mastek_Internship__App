@@ -18,10 +18,10 @@ class HomeListTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.all(10.0),
+      contentPadding: const EdgeInsets.all(10.0),
       tileColor: Colors.orange,
       shape: RoundedRectangleBorder(
-        side: BorderSide(width: 1.0, color: Colors.red),
+        side: const BorderSide(width: 1.0, color: Colors.red),
         borderRadius: BorderRadius.circular(gBorderRadius),
       ),
       leading: Image(

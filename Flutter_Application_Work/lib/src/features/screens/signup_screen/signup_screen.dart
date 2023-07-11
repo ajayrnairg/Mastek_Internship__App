@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:rough_app/src/common_widgets/form_widget/form_header_widget.dart';
 import 'package:rough_app/src/constants/image_strings.dart';
 import 'package:rough_app/src/constants/sizes.dart';
@@ -21,7 +21,7 @@ class SignUpScreen extends StatelessWidget {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(gDefaultSize),
+            padding: const EdgeInsets.all(gDefaultSize),
             child: Column(
               children: [
                 /* Section - 1 */

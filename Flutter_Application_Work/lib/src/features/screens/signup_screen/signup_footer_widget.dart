@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
 
-import '../../../constants/image_strings.dart';
+
 import '../../../constants/text_strings.dart';
 
 class SignupFooterWidget extends StatelessWidget {

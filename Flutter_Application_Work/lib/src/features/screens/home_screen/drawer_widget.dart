@@ -21,26 +21,26 @@ class DrawerWidget extends StatelessWidget {
           UserAccountsDrawerHeader(
             accountName: Text(gAccountName, style: Theme.of(context).textTheme.headlineMedium,),
             accountEmail: Text(gAccountEmail, style: Theme.of(context).textTheme.titleMedium,),
-            currentAccountPicture: CircleAvatar(
+            currentAccountPicture: const CircleAvatar(
               foregroundImage: AssetImage(gUser_icon_2_image),
             ),
           ),
           Column(
             children: [
               ListTile(
-                leading: Icon(Icons.language),
+                leading: const Icon(Icons.language),
                 title: Text(gLanguages, style: Theme.of(context).textTheme.titleSmall,),
               ),
               ListTile(
-                leading: Icon(Icons.settings),
+                leading: const Icon(Icons.settings),
                 title: Text(gSettings, style: Theme.of(context).textTheme.titleSmall,),
               ),
               ListTile(
-                leading: Icon(Icons.help_center),
+                leading: const Icon(Icons.help_center),
                 title: Text(gHelpCenter, style: Theme.of(context).textTheme.titleSmall,),
               ),
               ListTile(
-                leading: Icon(Icons.logout),
+                leading: const Icon(Icons.logout),
                 title: Text(gLogOut, style: Theme.of(context).textTheme.titleSmall,),
                 onTap: (){
                   AuthMethods().signOut().then((value){

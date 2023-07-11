@@ -1,10 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
-import 'package:rough_app/src/features/screens/login_screen/login_screen.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helperfunctions/sharedpref_helper.dart';
@@ -33,6 +31,7 @@ class AuthMethods {
 
     UserCredential result = await firebaseAuth.signInWithCredential(credential);
 
+
     if (result != null) {
       User userDetails = result.user!;
       SharedPreferenceHelper().saveUserEmail(userDetails.email);
@@ -41,6 +40,11 @@ class AuthMethods {
       SharedPreferenceHelper().saveDisplayName(userDetails.displayName);
       SharedPreferenceHelper()
           .saveUserName(userDetails.email!.replaceAll("@gmail.com", ""));
+    //   print("showing display name");
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // print(prefs.getString("USERDISPLAYNAMEKEY"));
+    // print("display name from method");
+    // print(await SharedPreferenceHelper().getDisplayName());
 
       Map<String, dynamic> userInfoMap = {
         "displayname": userDetails.displayName,
@@ -54,7 +58,7 @@ class AuthMethods {
           .addGoogleUserInfoToDB(userDetails.uid, userInfoMap)
           .then((value) {
         print("data added to DB");
-        Get.offAll(() => const HomeScreen());
+        // Get.offAll(() => const HomeScreen());
         // Navigator.pushReplacement(
         //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
       });
@@ -111,7 +115,7 @@ class AuthMethods {
           .addGoogleUserInfoToDB(userDetails.uid, userInfoMap)
           .then((value) {
         print("data added to DB");
-        Get.to(()=>const LogInScreen());
+        // Get.to(()=>const LogInScreen());
         // Navigator.pushReplacement(
         //     context, MaterialPageRoute(builder: (context) => LogInScreen()));
       });

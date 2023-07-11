@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
 
 import '../../../constants/image_strings.dart';
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
 import '../../../utils/services/auth.dart';
+
 
 class LoginFooterWidget extends StatelessWidget {
   const LoginFooterWidget({
@@ -31,7 +33,16 @@ class LoginFooterWidget extends StatelessWidget {
               width: 20.0,
             ),
             onPressed: () {
-              AuthMethods().signInWithGoogle(context);
+              AuthMethods().signInWithGoogle(context).then((value) {
+                print("Logged In Successfully with Google");
+
+                controller.goToHomePageFunc();
+                // Get.offAll(()=>const HomeScreen());
+                // Navigator.pushReplacement(context,
+                //     MaterialPageRoute(builder: (context) => const HomeScreen()));
+              }).onError((error, stackTrace) {
+                print("Error Logging In with Google:  ${error.toString()}");
+              });
             },
             label: const Text(gSignInWithGoogle),
           ),

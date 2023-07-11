@@ -78,6 +78,8 @@ class SharedPreferenceHelper {
 
   Future<String?> getDisplayName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // print("display name inside method");
+    // print(prefs.getString(displayNameKey));
     return prefs.getString(displayNameKey);
   }
 

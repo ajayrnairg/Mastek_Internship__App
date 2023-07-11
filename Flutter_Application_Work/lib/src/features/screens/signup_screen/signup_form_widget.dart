@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
-import 'package:rough_app/src/features/screens/login_screen/login_screen.dart';
+
 
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
@@ -49,7 +49,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 decoration: InputDecoration(
                   label: Text(gFullName,
                       style: Theme.of(context).textTheme.titleSmall),
-                  prefixIcon: Icon(Icons.person_outline_rounded),
+                  prefixIcon: const Icon(Icons.person_outline_rounded),
                 )),
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(
@@ -59,7 +59,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 decoration: InputDecoration(
                   label: Text(gEmail,
                       style: Theme.of(context).textTheme.titleSmall),
-                  prefixIcon: Icon(Icons.email_outlined),
+                  prefixIcon: const Icon(Icons.email_outlined),
                 )),
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(

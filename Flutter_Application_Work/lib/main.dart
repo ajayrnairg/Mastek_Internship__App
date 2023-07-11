@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           future: AuthMethods().getCurrentUser(),
           builder: (context, AsyncSnapshot<dynamic> snapshot){
             if(snapshot.hasData){
-              return const HomeScreen();
+              return  HomeScreen();
             }
             else{
               return const WelcomeScreen();

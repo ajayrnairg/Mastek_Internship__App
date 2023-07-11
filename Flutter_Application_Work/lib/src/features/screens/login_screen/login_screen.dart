@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:rough_app/src/constants/image_strings.dart';
 import 'package:rough_app/src/constants/sizes.dart';
 import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';

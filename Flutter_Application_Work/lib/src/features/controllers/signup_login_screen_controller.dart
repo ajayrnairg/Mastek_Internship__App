@@ -22,7 +22,7 @@ class SignupLoginScreenController extends GetxController {
   }
 
   goToHomePageFunc(){
-    Get.offAll(() => const HomeScreen());
+    Get.offAll(() =>  HomeScreen());
   }
 
 }

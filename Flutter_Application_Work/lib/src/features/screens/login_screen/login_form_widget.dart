@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
-import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
+
 
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
@@ -87,8 +86,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                       .then((value) {
                     print("Logged In Successfully");
 
-                    // controller.goToHomePageFunc();
-                    Get.offAll(()=>const HomeScreen());
+                    widget.controller.goToHomePageFunc();
+                    // Get.offAll(()=>const HomeScreen());
                     // Navigator.pushReplacement(context,
                     //     MaterialPageRoute(builder: (context) => const HomeScreen()));
                   }).onError((error, stackTrace) {
