@@ -1,11 +1,10 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:rough_app/src/features/controllers/signup_login_screen_controller.dart';
-
 
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
 import '../../../utils/services/auth.dart';
-
 
 class SignupFormWidget extends StatefulWidget {
   const SignupFormWidget({
@@ -14,17 +13,16 @@ class SignupFormWidget extends StatefulWidget {
   });
 
   final SignupLoginScreenController controller;
+
   @override
   State<SignupFormWidget> createState() => _SignupFormWidgetState();
-
-
 }
 
 class _SignupFormWidgetState extends State<SignupFormWidget> {
-
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController displayNameTextController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -39,6 +37,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: gFormHeight - 10.0),
       child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,7 +50,15 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   label: Text(gFullName,
                       style: Theme.of(context).textTheme.titleSmall),
                   prefixIcon: const Icon(Icons.person_outline_rounded),
-                )),
+                ),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "Display name cannot be empty";
+                  } else {
+                    return null;
+                  }
+                }
+            ),
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(
                 controller: emailTextController,
@@ -60,37 +68,58 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   label: Text(gEmail,
                       style: Theme.of(context).textTheme.titleSmall),
                   prefixIcon: const Icon(Icons.email_outlined),
-                )),
+                ),
+                validator: (emailId) {
+                  if (emailId != null && !EmailValidator.validate(emailId)) {
+                    return "Enter a valid email";
+                  } else {
+                    return null;
+                  }
+                }),
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(
-                controller: passwordTextController,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  label: Text(gPassword,
-                      style: Theme.of(context).textTheme.titleSmall),
-                  prefixIcon: const Icon(Icons.fingerprint),
-                )),
+              controller: passwordTextController,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: InputDecoration(
+                label: Text(gPassword,
+                    style: Theme.of(context).textTheme.titleSmall),
+                prefixIcon: const Icon(Icons.fingerprint),
+              ),
+              validator: (value) {
+                if (value != null && value.contains(" ")) {
+                  return "Password cannot contain empty spaces.";
+                } else if (value != null && value.length < 6) {
+                  return "Enter minimum 6 characters";
+                } else {
+                  return null;
+                }
+              },
+            ),
             const SizedBox(height: gFormHeight),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  AuthMethods()
-                      .signUpWithEmailPassword(context,
-                      displayNameTextController.text,
-                      emailTextController.text,
-                      passwordTextController.text)
-                      .then((value) {
-                    print("Created new account");
-                    widget.controller.goToLoginPageFunc();
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => const LogInScreen()));
-                  }).onError((error, stackTrace) {
-                    print("Error while creating new account: ${error.toString()}");
-                  });
-
+                  final isValidForm = formKey.currentState!.validate();
+                  if (isValidForm) {
+                    AuthMethods()
+                        .signUpWithEmailPassword(
+                            context,
+                            displayNameTextController.text,
+                            emailTextController.text,
+                            passwordTextController.text)
+                        .then((value) {
+                      print("Created new account");
+                      widget.controller.goToLoginPageFunc();
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => const LogInScreen()));
+                    }).onError((error, stackTrace) {
+                      print(
+                          "Error while creating new account: ${error.toString()}");
+                    });
+                  }
                 },
                 child: Text(gSignup.toUpperCase()),
               ),
