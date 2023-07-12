@@ -32,7 +32,8 @@ class MyApp extends StatelessWidget {
               return  HomeScreen();
             }
             else{
-              return const WelcomeScreen();
+              return WelcomeScreen();
+                // SplashScreen();
             }
           }
       ),

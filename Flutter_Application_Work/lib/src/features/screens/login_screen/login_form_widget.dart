@@ -21,12 +21,26 @@ class LoginFormWidget extends StatefulWidget {
 class _LoginFormWidgetState extends State<LoginFormWidget> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
+  bool hidePassword = true;
 
   @override
   void dispose() {
     emailTextController.dispose();
     passwordTextController.dispose();
     super.dispose();
+  }
+
+
+
+  void togglePassword(){
+    if(hidePassword == true){
+      hidePassword = false;
+    }else{
+      hidePassword =true;
+    }
+    setState(() {
+
+    });
   }
 
   @override
@@ -52,19 +66,19 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(
               controller: passwordTextController,
-              obscureText: true,
+              obscureText: hidePassword,
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.visiblePassword,
               style: Theme.of(context).textTheme.titleSmall,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.fingerprint),
+              decoration:  InputDecoration(
+                prefixIcon: const Icon(Icons.fingerprint),
                 labelText: gPassword,
                 hintText: gPassword,
                 // border: OutlineInputBorder(),
                 suffixIcon: IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.remove_red_eye_sharp),
+                  onPressed: (){ togglePassword();},
+                  icon: hidePassword ? Icon(Icons.visibility_off):Icon(Icons.remove_red_eye_sharp),
                 ),
               ),
             ),
@@ -72,7 +86,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  widget.controller.goToForgotPasswordFunc();
+                },
                 child: const Text(gForgotPassword),
               ),
             ),

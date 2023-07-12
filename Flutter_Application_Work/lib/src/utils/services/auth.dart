@@ -127,4 +127,8 @@ class AuthMethods {
     prefs.clear();
     await auth.signOut();
   }
+
+  Future passwordReset(String emailId) async{
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: emailId);
+  }
 }

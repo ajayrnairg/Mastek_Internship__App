@@ -49,10 +49,14 @@ const String gWelcomeSubTitle =
 
 /* LogIn Screen Text */
 const String gLoginTitle = "Welcome Back";
-const String gLoginSubTitle = "Make if work, make it right, make it fast.";
+const String gLoginSubTitle = "Make it work, make it right, make it fast.";
 const String gRememberMe = "Remember Me?";
 
 const String gForgotPassword = "Forgot Password?";
+const String gForgotPasswordEmailRequest = "Enter your Email to receive a password reset link";
+const String gResetPassword = "Reset Password";
+const String gAssistance = "For any assistance, please contact";
+const String gMastekEmail = "mastekinternship@gmail.com";
 const String gSignInWithGoogle = "Sign In With Google";
 const String gDontHaveAnAccount = "Don't Have An Account? ";
 
