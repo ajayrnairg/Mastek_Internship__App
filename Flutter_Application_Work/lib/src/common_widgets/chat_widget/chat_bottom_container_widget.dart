@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rough_app/src/features/controllers/direct_chat_screen_controller.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+//for COdec
+import 'package:flutter_sound/flutter_sound.dart';
+
 class ChatBottomContainerWidget extends StatefulWidget {
   const ChatBottomContainerWidget({
     super.key,
     required this.directChatScreenController,
+    required this.selectedLang1,
+    required this.selectedLang2,
     required this.callback,
   });
 
   final Function callback;
-
+  final String selectedLang1, selectedLang2;
   final DirectChatScreenController directChatScreenController;
 
   @override
@@ -51,10 +57,19 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
     );
   }
 
-  Future record() async {
+  Future<String> get _localPath async {
+    final directory = await getTemporaryDirectory();
+    return directory.path;
+  }
+
+  Future record(String messageIdAsName) async {
     if (!isRecorderReady) return;
+    final tempPath = await _localPath;
+    print("temporary path: $tempPath");
+    // await recorder.startRecorder(toFile: '$messageIdAsName.mp4');
     recordStatus = true;
-    await recorder.startRecorder(toFile: 'audio.mp4');
+    await recorder.startRecorder(
+        toFile: '$tempPath/$messageIdAsName.wav', codec: Codec.pcm16WAV);
   }
 
   Future stop() async {
@@ -113,11 +128,11 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
 
                         return Text(
                           '$twoDigitMinutes:$twoDigitSeconds',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                            ),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                          ),
                         );
                       },
                     ),
@@ -128,10 +143,24 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                 if (recorder.isRecording) {
                   // debugPrint("was running");
                   await stop();
-                  // debugPrint("now stopped");
+                  print("adding message");
+                  if (widget.directChatScreenController.switchValue) {
+                    await widget.directChatScreenController.buildAndAddMessage(
+                        widget.directChatScreenController.getSideValue(),
+                        widget.selectedLang1,
+                        widget.selectedLang2,
+                        isAudioMessage: true);
+                  } else {
+                    await widget.directChatScreenController.buildAndAddMessage(
+                        widget.directChatScreenController.getSideValue(),
+                        widget.selectedLang2,
+                        widget.selectedLang1,
+                        isAudioMessage: true);
+                  }
                 } else {
                   // debugPrint("was not running");
-                  await record();
+                  await record(
+                      "${widget.directChatScreenController.combinedMessages.length}");
                   // debugPrint("now started");
                 }
 

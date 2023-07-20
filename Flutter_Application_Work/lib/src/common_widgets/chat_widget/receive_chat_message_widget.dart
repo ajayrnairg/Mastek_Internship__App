@@ -32,7 +32,7 @@ class ReceiveChatMessageWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(directChatScreenController
-                        .combineMsgs[index]["what"]
+                        .combinedMessages[index]["message_translation_text"]
                         .toString()),
                   ),
                 ],

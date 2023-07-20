@@ -1,74 +1,121 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rough_app/src/features/screens/direct_chat_screen/direct_chat_main_screen.dart';
+
+import '../../utils/apis/TextToSpeechAPI.dart';
+import '../../utils/apis/speechToText.dart';
+import '../../utils/apis/translation_api.dart';
+import '../../utils/helperfunctions/languages.dart';
+import '../../utils/helperfunctions/voiceAndLanguages.dart';
 
 class DirectChatScreenController extends GetxController {
   static DirectChatScreenController get find => Get.find();
 
-  List<Map<String, String>> sendMsgs = [
-    {"who": "a", "what": "hello"},
-    {"who": "a", "what": "hi"},
-    {"who": "a", "what": "bye"},
-    {"who": "a", "what": "Welcome"},
-    {"who": "a", "what": "Thank You"},
-    {"who": "a", "what": "Namaste"},
-    {"who": "a", "what": "What's App"}
-  ];
-  List<Map<String, String>> receiveMsgs = [
-    {"who": "b", "what": "bye"},
-    {"who": "b", "what": "hello"},
-    {"who": "b", "what": "hi"},
-    {"who": "b", "what": "Thank You"},
-    {"who": "b", "what": "Welcome"},
-    {"who": "b", "what": "What's App"},
-    {"who": "b", "what": "Namaste"},
-  ];
-  List<Map<String, String>> combineMsgs = [
-    {
-      "who": "a",
-      "what": "bye WelcomeWelcomeWelcomeWelcome ",
-      "time": "21:30:10"
-    },
-    {"who": "b", "what": "hello", "time": "02:05:40"},
-    {
-      "who": "a",
-      "what":
-      "Thank YouThank YouThank YouThank YouThank YouThank YouThank YouThank YouThank YouThank YouThank YouThank You",
-      "time": "06:10:05"
-    },
-    {
-      "who": "b",
-      "what": "Thank You WelcomeWelcomeWelcomeWelcome",
-      "time": "11:25:50"
-    },
-    {"who": "a", "what": "Namaste Namaste Namaste Namaste", "time": "14:20:55"},
-    {
-      "who": "b",
-      "what":
-      "WelcomeWelcomeWelcomeWelcomeWelcomeWelcomeWelcomeWelcomeWelcomeWelcomeWelcomeWelcome",
-      "time": "23:59:59"
-    },
-    {"who": "a", "what": "What's App", "time": "06:10:05"},
+  bool switchValue = true;
 
-    {"who": "b", "what": "bye hello hi hi", "time": "14:20:55"},
-
-    {"who": "a", "what": "hello hi hi hi", "time": "09:15:30"},
-    {"who": "b", "what": "Namaste", "time": "18:55:15"},
-    {"who": "a", "what": "hi bye bye bye bye", "time": "12:00:00"},
-    {"who": "b", "what": "What's App", "time": "02:05:40"},
-    {"who": "a", "what": "WelcomeWelcomeWelcomeWelcome", "time": "16:45:20"},
-    {"who": "b", "what": "WelcomeWelcomeWelcomeWelcome hi", "time": "18:55:15"},
-
-
-  ];
+  List<Map<String, String>> combinedMessages = [];
 
   TextEditingController messageTextEditingController = TextEditingController();
 
   goToDirectMainChatFunc(selectedLang1, selectedLang2) {
     Get.to(() => DirectChatMainScreen(
         selectedLang1: selectedLang1, selectedLang2: selectedLang2));
+  }
+
+  String getSideValue() {
+    if (!switchValue) {
+      return "Left";
+    } else {
+      return "Right";
+    }
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getTemporaryDirectory();
+    return directory.path;
+  }
+
+  Future<String> translateText(String message, String language) async {
+    return await TranslationApi.translate(
+        message, Languages.getLanguageCode(language));
+  }
+
+  Future<String> getSpeechToTextResults(
+      String audioPath, String language) async {
+    return await STT()
+        .transcribe(audioPath, Languages.getLanguageCode(language));
+  }
+
+  Future<String> textToSpeechPath(
+      String text, String filename, String toLanguage) async {
+    final nameLangCode =
+    VoiceAndLanguages.getVoiceAndLanguageCode(toLanguage, "FEMALE");
+
+    final String audioContent = await TextToSpeechAPI()
+        .synthesizeText(text, nameLangCode[0], nameLangCode[1]);
+    print("audiocontent is $audioContent");
+    final bytes =
+    const Base64Decoder().convert(audioContent, 0, audioContent.length);
+
+    final file = File('$filename.wav');
+    await file.writeAsBytes(bytes);
+    print(file.path);
+
+    return file.path;
+  }
+
+  Future<void> buildAndAddMessage(String side, String fromLanguage, String toLanguage,
+      {bool isAudioMessage = false}) async {
+    if (messageTextEditingController.text.trim() != "" || isAudioMessage) {
+      final tempPath = await _localPath;
+      String? filePath = '$tempPath/${combinedMessages.length}.wav';
+      String message = messageTextEditingController.text;
+
+      if (isAudioMessage) {
+        message = await getSpeechToTextResults(filePath, fromLanguage);
+      }
+
+      String translatedText = await translateText(message, toLanguage);
+      Map<String, String> newMessageData = {
+        "message_id": "${combinedMessages.length}",
+        "message_original_language": fromLanguage,
+        "message_original_text": message,
+        "message_language_side": side,
+        "message_original_audio_content": filePath ?? "",
+        "message_translation_language": toLanguage,
+        "message_translation_text": translatedText,
+        "message_translation_audio_content": "",
+        "message_timestamp":
+            "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}:${DateTime.now().millisecond}"
+      };
+      combinedMessages.add(newMessageData);
+    }
+    messageTextEditingController.text = "";
+  }
+
+  Future<String> getOrCreateTranslationAudioPath(String messageId) async {
+    if (combinedMessages[int.parse(messageId)]
+            ["message_translation_audio_content"] !=
+        "") {
+      return combinedMessages[int.parse(messageId)]
+              ["message_translation_audio_content"]!
+          .trim();
+    } else {
+      final tempPath = await _localPath;
+      String filepath = await textToSpeechPath(
+          combinedMessages[int.parse(messageId)]["message_translation_text"]!,
+          "$tempPath/$messageId-translated",
+          combinedMessages[int.parse(messageId)]
+              ["message_translation_language"]!);
+      combinedMessages[int.parse(messageId)]
+          ["message_translation_audio_content"] = filepath.trim();
+      return filepath.trim();
+    }
   }
 
   addMessage() {
@@ -79,11 +126,11 @@ class DirectChatScreenController extends GetxController {
         "who": "b",
         "what": "${message}",
         "time":
-        "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}"
+            "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}"
       };
-      combineMsgs.insert(0, mapInstance);
+      combinedMessages.add(mapInstance);
       debugPrint(mapInstance.toString());
-      debugPrint(combineMsgs.toString());
+      debugPrint(combinedMessages.toString());
     }
     messageTextEditingController.text = "";
   }

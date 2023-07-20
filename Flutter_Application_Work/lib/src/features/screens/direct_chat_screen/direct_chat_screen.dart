@@ -20,11 +20,16 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
     _selectedVal2 = dropDownListItems2.firstOrNull;
   }
 
-  final dropDownListItems1 = [gFirstLang1, gFirstLang2, gFirstLang3, gFirstLang4];
+  final dropDownListItems1 = [
+    gFirstLang1,
+    gFirstLang2,
+    gFirstLang3,
+    gFirstLang4
+  ];
   String? _selectedVal1 = " ";
   final dropDownListItems2 = [
-    gSecondLang1,
     gSecondLang2,
+    gSecondLang1,
     gSecondLang3,
     gSecondLang4
   ];
@@ -141,12 +146,12 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
               padding: EdgeInsets.all(gSmallSpace * 2),
               child: ElevatedButton(
                 onPressed: () {
-                  directChatScreenController.goToDirectMainChatFunc(_selectedVal1, _selectedVal2);
+                  directChatScreenController.goToDirectMainChatFunc(
+                      _selectedVal1, _selectedVal2);
                 },
                 child: Center(
                   child: Text(gNextButton),
                 ),
-
               ),
             ),
           ],

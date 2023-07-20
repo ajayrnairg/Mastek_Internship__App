@@ -29,14 +29,31 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(gDirectChatScreenName),
-        leading: IconButton(
-          onPressed: () {
-            homeScreenController.goBackOnePageFunc();
-          },
-          icon: Icon(Icons.arrow_back_ios),
-        ),
-      ),
+          title: Text(gDirectChatScreenName),
+          leading: IconButton(
+            onPressed: () {
+              homeScreenController.goBackOnePageFunc();
+            },
+            icon: Icon(Icons.arrow_back_ios),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                icon: Icon(Icons.copy)),
+            Switch(
+                // This bool value toggles the switch.
+                value: directChatScreenController.switchValue,
+                activeColor: Colors.red,
+                onChanged: (bool value) {
+                  // This is called when the user toggles the switch.
+                  setState(() {
+                    directChatScreenController.switchValue = value;
+                  });
+                  // print(directChatScreenController.switchValue);
+                })
+          ]),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -49,7 +66,11 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ChatMessageContainerMainWidget(size: size, directChatScreenController: directChatScreenController),
+                child: ChatMessageContainerMainWidget(
+                    size: size,
+                    directChatScreenController: directChatScreenController,
+                    selectedLang1: widget.selectedLang1,
+                    selectedLang2: widget.selectedLang2),
               ),
             ],
           ),
@@ -58,5 +79,3 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
     );
   }
 }
-
-

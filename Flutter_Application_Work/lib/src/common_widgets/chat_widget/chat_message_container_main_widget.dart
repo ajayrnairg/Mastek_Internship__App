@@ -9,10 +9,13 @@ class ChatMessageContainerMainWidget extends StatefulWidget {
     super.key,
     required this.size,
     required this.directChatScreenController,
+    required this.selectedLang1,
+    required this.selectedLang2,
   });
 
   final Size size;
   final DirectChatScreenController directChatScreenController;
+  final String selectedLang1, selectedLang2;
 
   @override
   State<ChatMessageContainerMainWidget> createState() =>
@@ -26,10 +29,21 @@ class _ChatMessageContainerMainWidgetState
     super.initState();
   }
 
-  void callback() {
-    setState(() {
-      widget.directChatScreenController.addMessage();
-    });
+  Future<void> callback() async {
+
+      if (widget.directChatScreenController.switchValue) {
+        await widget.directChatScreenController.buildAndAddMessage(
+            widget.directChatScreenController.getSideValue(),
+            widget.selectedLang1,
+            widget.selectedLang2);
+      } else {
+        await widget.directChatScreenController.buildAndAddMessage(
+            widget.directChatScreenController.getSideValue(),
+            widget.selectedLang2,
+            widget.selectedLang1);
+      }
+      // widget.directChatScreenController.addMessage();
+      setState(() {});
   }
 
   @override
@@ -42,12 +56,13 @@ class _ChatMessageContainerMainWidgetState
             height: widget.size.height * 0.71,
             child: ListView.builder(
               shrinkWrap: true,
-              reverse: true,
-              itemCount: widget.directChatScreenController.combineMsgs.length,
+              reverse: false,
+              itemCount:
+                  widget.directChatScreenController.combinedMessages.length,
               itemBuilder: (context, index) {
-                if (widget.directChatScreenController.combineMsgs[index]
-                        ["who"] ==
-                    "a") {
+                if (widget.directChatScreenController.combinedMessages[index]
+                        ["message_language_side"] ==
+                    "Left") {
                   return SendChatMessageWidget(
                       index: index,
                       size: widget.size,
@@ -65,7 +80,10 @@ class _ChatMessageContainerMainWidgetState
           ),
           ChatBottomContainerWidget(
               callback: callback,
-              directChatScreenController: widget.directChatScreenController),
+              directChatScreenController: widget.directChatScreenController,
+              selectedLang1: widget.selectedLang1,
+              selectedLang2: widget.selectedLang2
+          ),
         ],
       ),
     );
