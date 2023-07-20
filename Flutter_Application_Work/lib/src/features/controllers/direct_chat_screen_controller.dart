@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -16,11 +17,26 @@ import '../../utils/helperfunctions/voiceAndLanguages.dart';
 class DirectChatScreenController extends GetxController {
   static DirectChatScreenController get find => Get.find();
 
-  bool switchValue = true;
+  // bool switchValue = true;
 
   List<Map<String, String>> combinedMessages = [];
 
   TextEditingController messageTextEditingController = TextEditingController();
+
+  bool isAnyMessageSelected = false;
+  int? selectedMessageIndex;
+
+  List<Widget> languages = <Widget>[];
+  final List<bool> selectedLanguages = <bool>[true, false];
+
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+
+  void initializeTogglerData(selectedLang1, selectedLang2){
+    languages.add(Text("$selectedLang1"));
+    languages.add(Text("$selectedLang2"));
+  }
+
 
   goToDirectMainChatFunc(selectedLang1, selectedLang2) {
     Get.to(() => DirectChatMainScreen(
@@ -28,7 +44,7 @@ class DirectChatScreenController extends GetxController {
   }
 
   String getSideValue() {
-    if (!switchValue) {
+    if (selectedLanguages[0]) {
       return "Left";
     } else {
       return "Right";
@@ -81,6 +97,10 @@ class DirectChatScreenController extends GetxController {
       }
 
       String translatedText = await translateText(message, toLanguage);
+      if(isAudioMessage && translatedText == ""){
+        return;
+      }
+
       Map<String, String> newMessageData = {
         "message_id": "${combinedMessages.length}",
         "message_original_language": fromLanguage,
@@ -118,20 +138,21 @@ class DirectChatScreenController extends GetxController {
     }
   }
 
-  addMessage() {
-    if (messageTextEditingController.text != "") {
-      String message = messageTextEditingController.text;
-      debugPrint(message);
-      Map<String, String> mapInstance = {
-        "who": "b",
-        "what": "${message}",
-        "time":
-            "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}"
-      };
-      combinedMessages.add(mapInstance);
-      debugPrint(mapInstance.toString());
-      debugPrint(combinedMessages.toString());
-    }
-    messageTextEditingController.text = "";
+  Future<void> playSelectedMessageAsAudio() async{
+    String filepath = await getOrCreateTranslationAudioPath("$selectedMessageIndex");
+    await audioPlayer
+        .play(DeviceFileSource(filepath));
   }
+
+  void printData() {
+    print("--------Combined Messages----------");
+    print(combinedMessages);
+  }
+
+  void clearData() {
+    combinedMessages = [];
+
+  }
+
+
 }

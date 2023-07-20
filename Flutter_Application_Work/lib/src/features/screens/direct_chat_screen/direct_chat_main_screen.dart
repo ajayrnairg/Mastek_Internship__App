@@ -25,57 +25,159 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
   final directChatScreenController = Get.put(DirectChatScreenController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    directChatScreenController.initializeTogglerData(
+        widget.selectedLang1, widget.selectedLang2);
+    super.initState();
+  }
+
+  Future<void> updateMyUI() async {
+    setState(() {});
+  }
+
+  void deselectMessage() {
+    directChatScreenController.isAnyMessageSelected = false;
+    directChatScreenController.selectedMessageIndex = null;
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-          title: Text(gDirectChatScreenName),
-          leading: IconButton(
-            onPressed: () {
-              homeScreenController.goBackOnePageFunc();
-            },
-            icon: Icon(Icons.arrow_back_ios),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  setState(() {});
-                },
-                icon: Icon(Icons.copy)),
-            Switch(
-                // This bool value toggles the switch.
-                value: directChatScreenController.switchValue,
-                activeColor: Colors.red,
-                onChanged: (bool value) {
-                  // This is called when the user toggles the switch.
-                  setState(() {
-                    directChatScreenController.switchValue = value;
-                  });
-                  // print(directChatScreenController.switchValue);
-                })
-          ]),
-      body: Center(
-        child: SingleChildScrollView(
+        appBar: AppBar(
+            title: const Text(gDirectChatScreenName),
+            leading: directChatScreenController.isAnyMessageSelected
+                ? IconButton(
+                    onPressed: () {
+                      deselectMessage();
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  )
+                : IconButton(
+                    onPressed: () {
+                      homeScreenController.goBackOnePageFunc();
+                    },
+                    icon: const Icon(Icons.arrow_back_ios),
+                  ),
+            actions: [
+              directChatScreenController.isAnyMessageSelected
+                  ? IconButton(
+                      onPressed: () {
+                        directChatScreenController.playSelectedMessageAsAudio();
+                      },
+                      icon: const Icon(Icons.volume_up))
+                  : const Icon(null),
+            ]),
+        body: SafeArea(
           child: Column(
             children: [
-              Center(
-                child: ToggleSwitchWidget(
-                    size: size,
-                    selectedLang1: widget.selectedLang1,
-                    selectedLang2: widget.selectedLang2),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  child: Center(
+                    child: ToggleButtons(
+                      borderColor: Colors.blue,
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      selectedBorderColor: Colors.blue,
+                      selectedColor: Colors.white,
+                      fillColor: Colors.blue,
+                      color: Colors.blue,
+                      direction: Axis.horizontal,
+                      constraints: BoxConstraints(
+                        minHeight: 40.0,
+                        minWidth: size.width * 0.45,
+                      ),
+                      textStyle: const TextStyle(fontSize: 20),
+                      onPressed: (int index) {
+                        setState(() {
+                          //   // The button that is tapped is set to true, and the others to false.
+                          for (int i = 0;
+                              i <
+                                  directChatScreenController
+                                      .selectedLanguages.length;
+                              i++) {
+                            directChatScreenController.selectedLanguages[i] =
+                                i == index;
+                            // print(directChatScreenController.selectedLanguages[i]);
+                          }
+                        });
+                      },
+                      isSelected: directChatScreenController.selectedLanguages,
+                      children: directChatScreenController.languages,
+                    ),
+                  ),
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ChatMessageContainerMainWidget(
-                    size: size,
-                    directChatScreenController: directChatScreenController,
-                    selectedLang1: widget.selectedLang1,
-                    selectedLang2: widget.selectedLang2),
+              Expanded(
+                flex: 9,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: ChatMessageContainerMainWidget(
+                        size: size,
+                        directChatScreenController: directChatScreenController,
+                        selectedLang1: widget.selectedLang1,
+                        selectedLang2: widget.selectedLang2,
+                        updateParentUI: updateMyUI),
+                  ),
+                ),
               ),
             ],
           ),
-        ),
-      ),
-    );
+        )
+
+        // Center(
+        //   child: SingleChildScrollView(
+        //     child: Column(
+        //       children: [
+        //         Center(
+        //           child: ToggleButtons(
+        //             borderColor: Colors.blue,
+        //             borderRadius: const BorderRadius.all(Radius.circular(5)),
+        //             selectedBorderColor: Colors.blue,
+        //             selectedColor: Colors.white,
+        //             fillColor: Colors.blue,
+        //             color: Colors.blue,
+        //             direction: Axis.horizontal,
+        //             constraints: BoxConstraints(
+        //               minHeight: 40.0,
+        //               minWidth: size.width * 0.45,
+        //             ),
+        //             onPressed: (int index) {
+        //
+        //               setState(() {
+        //               //   // The button that is tapped is set to true, and the others to false.
+        //                 for (int i = 0; i < directChatScreenController.selectedLanguages.length; i++) {
+        //                   directChatScreenController.selectedLanguages[i] = i == index;
+        //                   // print(directChatScreenController.selectedLanguages[i]);
+        //                 }
+        //               });
+        //             },
+        //             isSelected: directChatScreenController.selectedLanguages,
+        //             children: directChatScreenController.languages,
+        //           ),
+        //         ),
+        //         // Center(
+        //         //   child: ToggleSwitchWidget(
+        //         //       size: size,
+        //         //       selectedLang1: widget.selectedLang1,
+        //         //       selectedLang2: widget.selectedLang2),
+        //         // ),
+        //         Padding(
+        //           padding: const EdgeInsets.all(8.0),
+        //           child: ChatMessageContainerMainWidget(
+        //               size: size,
+        //               directChatScreenController: directChatScreenController,
+        //               selectedLang1: widget.selectedLang1,
+        //               selectedLang2: widget.selectedLang2),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        );
   }
 }

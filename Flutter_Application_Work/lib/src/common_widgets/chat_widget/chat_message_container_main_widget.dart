@@ -5,17 +5,18 @@ import 'package:rough_app/src/common_widgets/chat_widget/send_chat_message_widge
 import 'package:rough_app/src/features/controllers/direct_chat_screen_controller.dart';
 
 class ChatMessageContainerMainWidget extends StatefulWidget {
-  const ChatMessageContainerMainWidget({
-    super.key,
-    required this.size,
-    required this.directChatScreenController,
-    required this.selectedLang1,
-    required this.selectedLang2,
-  });
+  const ChatMessageContainerMainWidget(
+      {super.key,
+      required this.size,
+      required this.directChatScreenController,
+      required this.selectedLang1,
+      required this.selectedLang2,
+      required this.updateParentUI});
 
   final Size size;
   final DirectChatScreenController directChatScreenController;
   final String selectedLang1, selectedLang2;
+  final Function updateParentUI;
 
   @override
   State<ChatMessageContainerMainWidget> createState() =>
@@ -30,20 +31,28 @@ class _ChatMessageContainerMainWidgetState
   }
 
   Future<void> callback() async {
+    if (widget.directChatScreenController.selectedLanguages[0]) {
+      await widget.directChatScreenController.buildAndAddMessage(
+          widget.directChatScreenController.getSideValue(),
+          widget.selectedLang1,
+          widget.selectedLang2);
+    } else {
+      await widget.directChatScreenController.buildAndAddMessage(
+          widget.directChatScreenController.getSideValue(),
+          widget.selectedLang2,
+          widget.selectedLang1);
+    }
+    // widget.directChatScreenController.addMessage();
+    setState(() {});
+  }
 
-      if (widget.directChatScreenController.switchValue) {
-        await widget.directChatScreenController.buildAndAddMessage(
-            widget.directChatScreenController.getSideValue(),
-            widget.selectedLang1,
-            widget.selectedLang2);
-      } else {
-        await widget.directChatScreenController.buildAndAddMessage(
-            widget.directChatScreenController.getSideValue(),
-            widget.selectedLang2,
-            widget.selectedLang1);
-      }
-      // widget.directChatScreenController.addMessage();
-      setState(() {});
+  Future<void> updateMyUI() async {
+    setState(() {});
+  }
+
+  Future<void> updateRootUI() async {
+    setState(() {});
+    widget.updateParentUI();
   }
 
   @override
@@ -53,7 +62,7 @@ class _ChatMessageContainerMainWidgetState
       child: ListView(
         children: [
           Container(
-            height: widget.size.height * 0.71,
+            height: widget.size.height * 0.665,
             child: ListView.builder(
               shrinkWrap: true,
               reverse: false,
@@ -63,26 +72,53 @@ class _ChatMessageContainerMainWidgetState
                 if (widget.directChatScreenController.combinedMessages[index]
                         ["message_language_side"] ==
                     "Left") {
-                  return SendChatMessageWidget(
+                  return Container(
+                    color:
+                        widget.directChatScreenController.isAnyMessageSelected
+                            ? (widget.directChatScreenController
+                                        .selectedMessageIndex ==
+                                    index)
+                                ? Colors.black.withOpacity(0.5)
+                                : null
+                            : null,
+                    child: ReceivedChatMessageWidget(
                       index: index,
                       size: widget.size,
                       directChatScreenController:
-                          widget.directChatScreenController);
+                          widget.directChatScreenController,
+                      updateParentUI: updateMyUI,
+                      updateRootUI: updateRootUI,
+                    ),
+                  );
                 } else {
-                  return ReceiveChatMessageWidget(
+                  return Container(
+                    color:
+                        widget.directChatScreenController.isAnyMessageSelected
+                            ? (widget.directChatScreenController
+                                        .selectedMessageIndex ==
+                                    index)
+                                ? Colors.black.withOpacity(0.5)
+                                : null
+                            : null,
+                    child: SendChatMessageWidget(
                       index: index,
                       size: widget.size,
                       directChatScreenController:
-                          widget.directChatScreenController);
+                          widget.directChatScreenController,
+                      updateParentUI: updateMyUI,
+                      updateRootUI: updateRootUI,
+                    ),
+                  );
                 }
               },
             ),
           ),
           ChatBottomContainerWidget(
-              callback: callback,
-              directChatScreenController: widget.directChatScreenController,
-              selectedLang1: widget.selectedLang1,
-              selectedLang2: widget.selectedLang2
+            callback: callback,
+            directChatScreenController: widget.directChatScreenController,
+            selectedLang1: widget.selectedLang1,
+            selectedLang2: widget.selectedLang2,
+            updateParentUI: updateMyUI,
           ),
         ],
       ),

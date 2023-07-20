@@ -16,9 +16,11 @@ class ChatBottomContainerWidget extends StatefulWidget {
     required this.selectedLang1,
     required this.selectedLang2,
     required this.callback,
+    required this.updateParentUI,
   });
 
   final Function callback;
+  final Function updateParentUI;
   final String selectedLang1, selectedLang2;
   final DirectChatScreenController directChatScreenController;
 
@@ -96,7 +98,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                   ? TextField(
                       controller: widget.directChatScreenController
                           .messageTextEditingController,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: 16.0,
@@ -128,7 +130,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
 
                         return Text(
                           '$twoDigitMinutes:$twoDigitSeconds',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
@@ -144,7 +146,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                   // debugPrint("was running");
                   await stop();
                   print("adding message");
-                  if (widget.directChatScreenController.switchValue) {
+                  if (widget.directChatScreenController.selectedLanguages[0]) {
                     await widget.directChatScreenController.buildAndAddMessage(
                         widget.directChatScreenController.getSideValue(),
                         widget.selectedLang1,
@@ -156,7 +158,9 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                         widget.selectedLang2,
                         widget.selectedLang1,
                         isAudioMessage: true);
+
                   }
+                  widget.updateParentUI();
                 } else {
                   // debugPrint("was not running");
                   await record(
@@ -166,13 +170,9 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
 
                 setState(() {});
               },
-              icon: Icon(Icons.mic_outlined),
+              icon: recordStatus ? Icon(Icons.stop) : Icon(Icons.mic_outlined),
             ),
-            IconButton(
-              color: Colors.blue,
-              onPressed: () {},
-              icon: Icon(Icons.volume_up_outlined),
-            ),
+
             IconButton(
               icon: Icon(Icons.send),
               onPressed: () {

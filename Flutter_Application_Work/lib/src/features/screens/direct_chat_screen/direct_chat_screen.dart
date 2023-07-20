@@ -6,6 +6,7 @@ import 'package:rough_app/src/features/controllers/home_screen_controller.dart';
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
 import '../../controllers/direct_chat_screen_controller.dart';
+import 'direct_chat_main_screen.dart';
 
 class DirectChatScreen extends StatefulWidget {
   const DirectChatScreen({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
     gFirstLang3,
     gFirstLang4
   ];
-  String? _selectedVal1 = " ";
+  String? _selectedVal1 = "";
   final dropDownListItems2 = [
     gSecondLang2,
     gSecondLang1,
@@ -38,7 +39,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
   @override
   Widget build(BuildContext context) {
     final homeScreenController = Get.put(HomeScreenController());
-    final directChatScreenController = Get.put(DirectChatScreenController());
+    // final directChatScreenController = Get.put(DirectChatScreenController());
 
     var size = MediaQuery.of(context).size;
     var height = size.height;
@@ -46,12 +47,12 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(gDirectChatScreenName),
+        title: const Text(gDirectChatScreenName),
         leading: IconButton(
           onPressed: () {
             homeScreenController.goToHomePageFunc();
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
       body: SingleChildScrollView(
@@ -61,7 +62,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
               padding: const EdgeInsets.all(gSmallSpace),
               child: Container(
                 height: height * 0.4,
-                padding: EdgeInsets.all(gSmallSpace),
+                padding: const EdgeInsets.all(gSmallSpace),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(gBorderRadius),
                   color: Colors.blue,
@@ -77,7 +78,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
             ),
             const SizedBox(height: gDefaultSize),
             Padding(
-              padding: EdgeInsets.fromLTRB(gSmallSpace * 2, gSmallSpace * 2,
+              padding: const EdgeInsets.fromLTRB(gSmallSpace * 2, gSmallSpace * 2,
                   gSmallSpace * 2, gSmallSpace),
               child: DropdownButtonFormField(
                 isExpanded: true,
@@ -85,11 +86,12 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                 items: dropDownListItems1
                     .map(
                       (e) => DropdownMenuItem(
+                        value: e,
                         child: Text(
                           e,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        value: e,
+
                       ),
                     )
                     .toList(),
@@ -98,11 +100,11 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                     _selectedVal1 = val;
                   });
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_drop_down_circle,
                   color: Colors.blue,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: gChooseFirstLang,
                     prefixIcon: Icon(Icons.sort_by_alpha_rounded),
                     border: OutlineInputBorder()),
@@ -111,7 +113,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
             // const SizedBox(height: gSmallSpace),
 
             Padding(
-              padding: EdgeInsets.fromLTRB(gSmallSpace * 2, gSmallSpace,
+              padding: const EdgeInsets.fromLTRB(gSmallSpace * 2, gSmallSpace,
                   gSmallSpace * 2, gSmallSpace * 2),
               child: DropdownButtonFormField(
                 isExpanded: true,
@@ -119,11 +121,12 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                 items: dropDownListItems2
                     .map(
                       (e) => DropdownMenuItem(
+                        value: e,
                         child: Text(
                           e,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        value: e,
+
                       ),
                     )
                     .toList(),
@@ -132,24 +135,26 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                     _selectedVal2 = val;
                   });
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_drop_down_circle,
                   color: Colors.blue,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: gChooseFirstLang,
                     prefixIcon: Icon(Icons.language_sharp),
                     border: OutlineInputBorder()),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(gSmallSpace * 2),
+              padding: const EdgeInsets.all(gSmallSpace * 2),
               child: ElevatedButton(
                 onPressed: () {
-                  directChatScreenController.goToDirectMainChatFunc(
-                      _selectedVal1, _selectedVal2);
+                  Get.to(() => DirectChatMainScreen(
+                      selectedLang1: _selectedVal1!, selectedLang2: _selectedVal2!));
+                  // directChatScreenController.goToDirectMainChatFunc(
+                  //     _selectedVal1, _selectedVal2);
                 },
-                child: Center(
+                child: const Center(
                   child: Text(gNextButton),
                 ),
               ),
