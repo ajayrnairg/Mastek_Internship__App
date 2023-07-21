@@ -22,10 +22,20 @@ class SendChatMessageWidget extends StatefulWidget {
 }
 
 class _SendChatMessageWidgetState extends State<SendChatMessageWidget> {
-  bool showOriginalText = false;
 
 
 
+  String decideWhatToDisplay() {
+    if (widget.directChatScreenController.selectedLanguages[0]) {
+
+        return "message_translation_text";
+
+    } else {
+
+        return "message_original_text";
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,39 +62,38 @@ class _SendChatMessageWidgetState extends State<SendChatMessageWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: showOriginalText
-                        ? Text(widget
-                            .directChatScreenController
-                            .combinedMessages[widget.index]
-                                ["message_original_text"]
-                            .toString())
-                        : Text(widget
-                            .directChatScreenController
-                            .combinedMessages[widget.index]
-                                ["message_translation_text"]
-                            .toString()),
+                    child: Text(widget.directChatScreenController
+                        .combinedMessages[widget.index][decideWhatToDisplay()]
+                        .toString(),style: const TextStyle(fontSize: 16),),
+
+                    // toggleText
+                    //     ? Text(widget
+                    //         .directChatScreenController
+                    //         .combinedMessages[widget.index]
+                    //             ["message_original_text"]
+                    //         .toString())
+                    //     : Text(widget
+                    //         .directChatScreenController
+                    //         .combinedMessages[widget.index]
+                    //             ["message_translation_text"]
+                    //         .toString()),
                   ),
                 ],
               ),
             ),
-            onTap: () {
-              setState(() {
-                showOriginalText = !showOriginalText;
-              });
-            },
+
             onLongPress: () {
               print("hehe");
               if (!widget.directChatScreenController.isAnyMessageSelected) {
-
                 widget.directChatScreenController.isAnyMessageSelected = true;
-                widget.directChatScreenController.selectedMessageIndex = widget.index;
+                widget.directChatScreenController.selectedMessageIndex =
+                    widget.index;
+                widget.directChatScreenController
+                    .selectedMessageDesiredLanguage = decideWhatToDisplay();
               }
-              setState(() {
-
-              });
+              setState(() {});
               widget.updateRootUI();
             },
-
           ),
         ],
       ),

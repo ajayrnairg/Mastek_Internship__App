@@ -19,11 +19,24 @@ class ReceivedChatMessageWidget extends StatefulWidget {
   final Function updateRootUI;
 
   @override
-  State<ReceivedChatMessageWidget> createState() => _ReceivedChatMessageWidgetState();
+  State<ReceivedChatMessageWidget> createState() =>
+      _ReceivedChatMessageWidgetState();
 }
 
 class _ReceivedChatMessageWidgetState extends State<ReceivedChatMessageWidget> {
-  bool showOriginalText = false;
+
+
+  String decideWhatToDisplay() {
+    if (widget.directChatScreenController.selectedLanguages[1]) {
+
+        return "message_translation_text";
+
+    } else {
+
+        return "message_original_text";
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,28 +63,31 @@ class _ReceivedChatMessageWidgetState extends State<ReceivedChatMessageWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: showOriginalText
-                        ? Text(widget.directChatScreenController
-                        .combinedMessages[widget.index]["message_original_text"]
-                        .toString())
-                        : Text(widget.directChatScreenController
-                        .combinedMessages[widget.index]["message_translation_text"]
-                        .toString()),
+                    child: Text(widget.directChatScreenController
+                        .combinedMessages[widget.index][decideWhatToDisplay()]
+                        .toString(),style: const TextStyle(fontSize: 16),),
+
+
+                    // toggleText
+                    //     ? Text(widget.directChatScreenController
+                    //     .combinedMessages[widget.index]["message_original_text"]
+                    //     .toString())
+                    //     : Text(widget.directChatScreenController
+                    //     .combinedMessages[widget.index]["message_translation_text"]
+                    //     .toString()),
                   ),
                 ],
               ),
             ),
-            onTap: () {
-              setState(() {
-                showOriginalText = !showOriginalText;
-              });
-            },
+
             onLongPress: () {
               print("hehe");
               if (!widget.directChatScreenController.isAnyMessageSelected) {
-
                 widget.directChatScreenController.isAnyMessageSelected = true;
-                widget.directChatScreenController.selectedMessageIndex = widget.index;
+                widget.directChatScreenController.selectedMessageIndex =
+                    widget.index;
+                widget.directChatScreenController
+                    .selectedMessageDesiredLanguage = decideWhatToDisplay();
               }
               setState(() {
 
@@ -82,7 +98,6 @@ class _ReceivedChatMessageWidgetState extends State<ReceivedChatMessageWidget> {
         ],
       ),
     );
-
   }
 }
 //

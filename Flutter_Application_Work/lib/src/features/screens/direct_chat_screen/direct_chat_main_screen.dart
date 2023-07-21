@@ -39,6 +39,7 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
   void deselectMessage() {
     directChatScreenController.isAnyMessageSelected = false;
     directChatScreenController.selectedMessageIndex = null;
+    directChatScreenController.selectedMessageDesiredLanguage = "";
     setState(() {});
   }
 
@@ -48,29 +49,35 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
 
     return Scaffold(
         appBar: AppBar(
-            title: const Text(gDirectChatScreenName),
-            leading: directChatScreenController.isAnyMessageSelected
-                ? IconButton(
-                    onPressed: () {
-                      deselectMessage();
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                  )
-                : IconButton(
-                    onPressed: () {
-                      homeScreenController.goBackOnePageFunc();
-                    },
-                    icon: const Icon(Icons.arrow_back_ios),
-                  ),
-            actions: [
-              directChatScreenController.isAnyMessageSelected
-                  ? IconButton(
+          title: const Text(gDirectChatScreenName),
+          leading: directChatScreenController.isAnyMessageSelected
+              ? IconButton(
+                  onPressed: () {
+                    deselectMessage();
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                )
+              : IconButton(
+                  onPressed: () {
+                    homeScreenController.goBackOnePageFunc();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
+          actions: directChatScreenController.isAnyMessageSelected
+              ? [
+                  IconButton(
+                      onPressed: () {
+                        directChatScreenController.addSelectedMessageToClipboard();
+                      },
+                      icon: const Icon(Icons.copy)),
+                  IconButton(
                       onPressed: () {
                         directChatScreenController.playSelectedMessageAsAudio();
                       },
                       icon: const Icon(Icons.volume_up))
-                  : const Icon(null),
-            ]),
+                ]
+              : null,
+        ),
         body: SafeArea(
           child: Column(
             children: [

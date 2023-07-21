@@ -13,6 +13,7 @@ import '../../utils/apis/speechToText.dart';
 import '../../utils/apis/translation_api.dart';
 import '../../utils/helperfunctions/languages.dart';
 import '../../utils/helperfunctions/voiceAndLanguages.dart';
+import 'package:flutter/services.dart';
 
 class DirectChatScreenController extends GetxController {
   static DirectChatScreenController get find => Get.find();
@@ -25,6 +26,7 @@ class DirectChatScreenController extends GetxController {
 
   bool isAnyMessageSelected = false;
   int? selectedMessageIndex;
+  String selectedMessageDesiredLanguage = "";
 
   List<Widget> languages = <Widget>[];
   final List<bool> selectedLanguages = <bool>[true, false];
@@ -35,6 +37,11 @@ class DirectChatScreenController extends GetxController {
   void initializeTogglerData(selectedLang1, selectedLang2){
     languages.add(Text("$selectedLang1"));
     languages.add(Text("$selectedLang2"));
+  }
+
+  void addSelectedMessageToClipboard() async{
+    String messageText = (combinedMessages[selectedMessageIndex!][selectedMessageDesiredLanguage])!;
+    await Clipboard.setData(ClipboardData(text: messageText));
   }
 
 
@@ -89,7 +96,7 @@ class DirectChatScreenController extends GetxController {
       {bool isAudioMessage = false}) async {
     if (messageTextEditingController.text.trim() != "" || isAudioMessage) {
       final tempPath = await _localPath;
-      String? filePath = '$tempPath/${combinedMessages.length}.wav';
+      String? filePath = '$tempPath/${combinedMessages.length}-Original.wav';
       String message = messageTextEditingController.text;
 
       if (isAudioMessage) {
@@ -107,6 +114,7 @@ class DirectChatScreenController extends GetxController {
         "message_original_text": message,
         "message_language_side": side,
         "message_original_audio_content": filePath ?? "",
+        "message_original_TTS_audio_content": "",
         "message_translation_language": toLanguage,
         "message_translation_text": translatedText,
         "message_translation_audio_content": "",
@@ -118,28 +126,38 @@ class DirectChatScreenController extends GetxController {
     messageTextEditingController.text = "";
   }
 
-  Future<String> getOrCreateTranslationAudioPath(String messageId) async {
+  Future<String> getOrCreateTranslationAudioPath(String messageId, String textSource) async {
+    String audioPath;
+    if(textSource == "message_original_text"){
+      audioPath = "message_original_TTS_audio_content";
+    }else{
+      audioPath = "message_translation_audio_content";
+    }
+
+
     if (combinedMessages[int.parse(messageId)]
-            ["message_translation_audio_content"] !=
+            [audioPath] !=
         "") {
       return combinedMessages[int.parse(messageId)]
-              ["message_translation_audio_content"]!
+              [audioPath]!
           .trim();
     } else {
       final tempPath = await _localPath;
       String filepath = await textToSpeechPath(
-          combinedMessages[int.parse(messageId)]["message_translation_text"]!,
-          "$tempPath/$messageId-translated",
-          combinedMessages[int.parse(messageId)]
-              ["message_translation_language"]!);
+          combinedMessages[int.parse(messageId)][textSource]!,
+          (textSource == "message_original_text")?"$tempPath/$messageId-TTS":"$tempPath/$messageId-Translated",
+          (textSource == "message_original_text")? combinedMessages[int.parse(messageId)]
+          ["message_original_language"]!:combinedMessages[int.parse(messageId)]
+          ["message_translation_language"]!);
       combinedMessages[int.parse(messageId)]
-          ["message_translation_audio_content"] = filepath.trim();
+      [audioPath] = filepath.trim();
+
       return filepath.trim();
     }
   }
 
   Future<void> playSelectedMessageAsAudio() async{
-    String filepath = await getOrCreateTranslationAudioPath("$selectedMessageIndex");
+    String filepath = await getOrCreateTranslationAudioPath("$selectedMessageIndex", selectedMessageDesiredLanguage);
     await audioPlayer
         .play(DeviceFileSource(filepath));
   }

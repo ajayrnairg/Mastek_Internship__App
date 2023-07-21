@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -14,13 +15,57 @@ import '../../utils/helperfunctions/languages.dart';
 import '../../utils/helperfunctions/voiceAndLanguages.dart';
 
 class TranslateScreenController extends GetxController{
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
 
-  List<String> combinedMessagesTrans = [];
-  String textgenratedstt = "";
+  Future<String> get _localPath async {
+    final directory = await getTemporaryDirectory();
+    return directory.path;
+  }
 
   Future<String> getSpeechToTextResults(
       String audioPath, String language) async {
+    print(audioPath);
     return await STT()
         .transcribe(audioPath, Languages.getLanguageCode(language));
   }
+
+  Future<String> translateText(String message, String language) async {
+    print(message);
+    return await TranslationApi.translate(
+        message, Languages.getLanguageCode(language));
+  }
+
+  Future<String> textToSpeechPath(
+      String text, String filename, String toLanguage) async {
+    final nameLangCode =
+    VoiceAndLanguages.getVoiceAndLanguageCode(toLanguage, "FEMALE");
+
+    final String audioContent = await TextToSpeechAPI()
+        .synthesizeText(text, nameLangCode[0], nameLangCode[1]);
+    print("audiocontent is $audioContent");
+    final bytes =
+    const Base64Decoder().convert(audioContent, 0, audioContent.length);
+
+    final file = File('$filename.wav');
+    await file.writeAsBytes(bytes);
+    print(file.path);
+
+    return file.path;
+  }
+
+  Future<void> playSelectedMessageAsAudio(String textSource, String textLanguage) async{
+    final tempPath = await _localPath;
+    String filepath = await textToSpeechPath(textSource, "$tempPath/translationPageTranslationSpeechAudio", textLanguage);
+    await audioPlayer
+        .play(DeviceFileSource(filepath));
+  }
+
+  void goToHomePageFunc(){
+    Get.back();
+  }
+
+
+
+
 }

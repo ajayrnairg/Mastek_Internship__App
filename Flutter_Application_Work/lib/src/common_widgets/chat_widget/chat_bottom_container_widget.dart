@@ -34,6 +34,8 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
   bool isRecorderReady = false;
   bool recordStatus = false;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -71,7 +73,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
     // await recorder.startRecorder(toFile: '$messageIdAsName.mp4');
     recordStatus = true;
     await recorder.startRecorder(
-        toFile: '$tempPath/$messageIdAsName.wav', codec: Codec.pcm16WAV);
+        toFile: '$tempPath/$messageIdAsName-Original.wav', codec: Codec.pcm16WAV);
   }
 
   Future stop() async {
