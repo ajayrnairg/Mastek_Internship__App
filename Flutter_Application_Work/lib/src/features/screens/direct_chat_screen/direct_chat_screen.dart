@@ -22,17 +22,23 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
   }
 
   final dropDownListItems1 = [
-    gFirstLang1,
-    gFirstLang2,
-    gFirstLang3,
-    gFirstLang4
+    gLanguage2,
+    gLanguage1,
+    gLanguage3,
+    gLanguage4,
+    gLanguage5,
+    gLanguage6,
+    gLanguage7,
   ];
   String? _selectedVal1 = "";
   final dropDownListItems2 = [
-    gSecondLang2,
-    gSecondLang1,
-    gSecondLang3,
-    gSecondLang4
+    gLanguage1,
+    gLanguage2,
+    gLanguage3,
+    gLanguage4,
+    gLanguage5,
+    gLanguage6,
+    gLanguage7,
   ];
   String? _selectedVal2 = "";
 
@@ -140,7 +146,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                   color: Colors.blue,
                 ),
                 decoration: const InputDecoration(
-                    labelText: gChooseFirstLang,
+                    labelText: gChooseSecondLang,
                     prefixIcon: Icon(Icons.language_sharp),
                     border: OutlineInputBorder()),
               ),

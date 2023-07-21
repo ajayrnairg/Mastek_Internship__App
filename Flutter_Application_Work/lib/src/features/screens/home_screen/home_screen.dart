@@ -14,15 +14,16 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   // final displayName;
 
-  // @override
-  // initState() async {
-  //   displayName = await SharedPreferenceHelper().getDisplayName();
-  // }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     final homeScreenController = Get.put(HomeScreenController());
     var size = MediaQuery.of(context).size;
+
 
     return Scaffold(
       appBar: AppBar(

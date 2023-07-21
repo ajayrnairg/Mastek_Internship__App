@@ -13,6 +13,8 @@ class HomeScreenController extends GetxController{
 
   static HomeScreenController get find => Get.find();
 
+
+
   goToPageFunc(key){
     debugPrint(key.toString());
     var ch = key.toString()[3].toUpperCase();

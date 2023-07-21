@@ -67,8 +67,8 @@ const String gAlreadyHaveAnAccount = "Already have an Account? ";
 
 
 /* Home Screen Text */
-const String gAccountEmail = "abcd@gmail.com";
-const String gAccountName = "Abcd Efgh";
+ String gAccountEmail = "abcd@gmail.com";
+ String gAccountName = "Abcd Efgh";
 const String gLanguages = "Languages";
 const String gSettings = "Settings";
 const String gHelpCenter = "Help Center";
@@ -85,13 +85,12 @@ const String gHomeText = "What would you like to do ?";
 
 const String gLangSelectionPage = "Language Selection";
 const String gChooseFirstLang = "Choose First Language";
-const String gFirstLang1 = "Hindi";
-const String gFirstLang2 = "English";
-const String gFirstLang3 = "Telugu";
-const String gFirstLang4 = "Kannada";
-
 const String gChooseSecondLang = "Choose Second Language";
-const String gSecondLang1 = "Hindi";
-const String gSecondLang2 = "English";
-const String gSecondLang3 = "Telugu";
-const String gSecondLang4 = "Kannada";
+
+const String gLanguage1 = "English";
+const String gLanguage2 = "Hindi";
+const String gLanguage3 = "Telugu";
+const String gLanguage4 = "Kannada";
+const String gLanguage5 = "Malayalam";
+const String gLanguage6 = "Tamil";
+const String gLanguage7 = "Marathi";

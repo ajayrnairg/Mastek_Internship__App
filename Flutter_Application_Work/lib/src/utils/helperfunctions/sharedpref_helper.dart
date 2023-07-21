@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constants/text_strings.dart';
+
 class SharedPreferenceHelper {
   static String userIdKey = "USERKEY";
   static String userNameKey = "USERNAMEKEY";
@@ -10,7 +12,9 @@ class SharedPreferenceHelper {
   //save data
   Future<bool> saveUserName(String? getUserName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (getUserName != null) {
+      gAccountName = getUserName!;
       return prefs.setString(userNameKey, getUserName);
     }else{
       return false;
@@ -19,7 +23,9 @@ class SharedPreferenceHelper {
 
   Future<bool> saveUserEmail(String? getUserEmail) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (getUserEmail != null) {
+      gAccountEmail = getUserEmail!;
       return prefs.setString(userEmailKey, getUserEmail);
     }
     else{
