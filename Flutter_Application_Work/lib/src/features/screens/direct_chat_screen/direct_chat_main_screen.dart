@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:rough_app/src/features/controllers/direct_chat_screen_controller.dart';
 import 'package:rough_app/src/features/controllers/home_screen_controller.dart';
-import '../../../common_widgets/chat_widget/chat_message_container_main_widget.dart';
+
 import '../../../common_widgets/toggle_widget/toggle_switch_widget.dart';
 import '../../../constants/text_strings.dart';
+import 'chat_widget/chat_message_container_main_widget.dart';
 
 class DirectChatMainScreen extends StatefulWidget {
   DirectChatMainScreen({

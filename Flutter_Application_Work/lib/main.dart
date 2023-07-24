@@ -1,11 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:rough_app/src/constants/image_strings.dart';
+import 'package:rough_app/src/constants/text_strings.dart';
 import 'package:rough_app/src/features/screens/direct_chat_screen/direct_chat_screen.dart';
 import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
 import 'package:rough_app/src/features/screens/rough_screen/rough_screen.dart';
 import 'package:rough_app/src/features/screens/splash_screen/splash_screen.dart';
 import 'package:rough_app/src/features/screens/welcome_screen/welcome_screen.dart';
+import 'package:rough_app/src/utils/helperfunctions/sharedpref_helper.dart';
 import 'package:rough_app/src/utils/services/auth.dart';
 import 'package:rough_app/src/utils/theme.dart';
 
@@ -18,6 +21,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -29,6 +34,7 @@ class MyApp extends StatelessWidget {
           future: AuthMethods().getCurrentUser(),
           builder: (context, AsyncSnapshot<dynamic> snapshot){
             if(snapshot.hasData){
+
               return  HomeScreen();
             }
             else{

@@ -2,9 +2,11 @@ import "package:flutter/material.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rough_app/src/constants/image_strings.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constants/text_strings.dart';
 import '../helperfunctions/sharedpref_helper.dart';
 import 'database.dart';
 
@@ -46,6 +48,12 @@ class AuthMethods {
     // print("display name from method");
     // print(await SharedPreferenceHelper().getDisplayName());
 
+      gAccountEmail = userDetails.email!;
+      gAccountName = userDetails.displayName!;
+      gAccountUserName = userDetails.email!.replaceAll("@gmail.com", "");
+      gUser_icon_image = userDetails.photoURL!;
+
+
       Map<String, dynamic> userInfoMap = {
         "displayname": userDetails.displayName,
         "email": userDetails.email,
@@ -80,6 +88,12 @@ class AuthMethods {
       // print("${userInfoMap.toString()}");
       // print(userInfoMap?["displayname"]);
       final displayName = userInfoMap?["displayname"];
+      print(displayName);
+      gAccountEmail = userDetails.email!;
+      gAccountName = displayName;
+      gAccountUserName = userDetails.email!.replaceAll("@gmail.com", "");
+      gUser_icon_image = userInfoMap?["profileURL"];
+
 
       SharedPreferenceHelper().saveUserEmail(userDetails.email);
       SharedPreferenceHelper().saveUserId(userDetails.uid);

@@ -10,20 +10,18 @@ import 'package:rough_app/src/features/screens/home_screen/home_list_tile_widget
 import '../../../utils/helperfunctions/sharedpref_helper.dart';
 import '../../controllers/home_screen_controller.dart';
 
+
+
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
   // final displayName;
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
     final homeScreenController = Get.put(HomeScreenController());
     var size = MediaQuery.of(context).size;
-
 
     return Scaffold(
       appBar: AppBar(
@@ -33,32 +31,12 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(gSmallSpace),
-              child: Container(
-                  padding: const EdgeInsets.all(gSmallSpace),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(gBorderRadius),
-                    color: Colors.blue,
-                  ),
-                  // color: Colors.blue,
-                  child: Center(
-                    child: Column(children: [
-                      const CircleAvatar(
-                        foregroundImage: AssetImage(gUser_icon_2_image),
-                        radius: 75.0,
-                      ),
-                      const SizedBox(height: gSmallSpace),
-                      Text("$gWelcome, $gAccountName",
-                          style: Theme.of(context).textTheme.headlineMedium),
-                      const SizedBox(height: gSmallSpace),
-                    ]),
-                  )),
-            ),
+            UserDetailContainer(),
             Padding(
               padding: const EdgeInsets.all(gSmallSpace),
               child: Center(
-                child: Text(gHomeText, style: Theme.of(context).textTheme.titleSmall),
+                child: Text(gHomeText,
+                    style: Theme.of(context).textTheme.titleSmall),
               ),
             ),
             Padding(
@@ -87,7 +65,6 @@ class HomeScreen extends StatelessWidget {
                         tileLeading: gGroupChat_icon_image,
                         tileTitle: gGroupChat,
                         controller: homeScreenController,
-
                       ),
                     ),
                     const SizedBox(height: gSmallSpace),
@@ -98,7 +75,6 @@ class HomeScreen extends StatelessWidget {
                         tileLeading: gDirectChat_icon_image,
                         tileTitle: gDirectChat,
                         controller: homeScreenController,
-
                       ),
                     ),
                     const SizedBox(height: gSmallSpace),
@@ -109,7 +85,6 @@ class HomeScreen extends StatelessWidget {
                         tileLeading: gTranslate_icon_image,
                         tileTitle: gTranslate,
                         controller: homeScreenController,
-
                       ),
                     ),
                   ],
@@ -122,3 +97,72 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+
+class UserDetailContainer extends StatefulWidget {
+  const UserDetailContainer({super.key});
+
+  @override
+  State<UserDetailContainer> createState() => _UserDetailContainerState();
+}
+
+class _UserDetailContainerState extends State<UserDetailContainer> {
+
+ getMyInfo() async{
+    gAccountEmail = (await SharedPreferenceHelper().getUserEmail())!;
+    gAccountName = (await SharedPreferenceHelper().getDisplayName())!;
+    gAccountUserName = (await SharedPreferenceHelper().getUserName())!;
+    gUser_icon_image = await SharedPreferenceHelper().getUserProfileUrl();
+    setState(() {
+
+    });
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getMyInfo();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(gSmallSpace),
+      child: Container(
+          padding: const EdgeInsets.all(gSmallSpace),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(gBorderRadius),
+            color: Colors.blue,
+          ),
+          // color: Colors.blue,
+          child: Center(
+            child: Column(children: [
+              (gUser_icon_image != null) ?
+              ClipOval(
+                  child: Image.network(
+                    gUser_icon_image!,
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  )):
+              ClipOval(
+                  child: Image.asset(
+                    gUser_icon_2_image!,
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  )),
+
+
+              const SizedBox(height: gSmallSpace),
+              Text("$gWelcome, $gAccountName",
+                  style: Theme.of(context).textTheme.headlineMedium),
+              const SizedBox(height: gSmallSpace),
+            ]),
+          )),
+    );
+  }
+}
+

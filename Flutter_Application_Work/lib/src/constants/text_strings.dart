@@ -69,6 +69,7 @@ const String gAlreadyHaveAnAccount = "Already have an Account? ";
 /* Home Screen Text */
  String gAccountEmail = "abcd@gmail.com";
  String gAccountName = "Abcd Efgh";
+ String gAccountUserName = "AbcUnique";
 const String gLanguages = "Languages";
 const String gSettings = "Settings";
 const String gHelpCenter = "Help Center";

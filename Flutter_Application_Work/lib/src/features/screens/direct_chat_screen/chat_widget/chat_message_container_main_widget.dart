@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rough_app/src/common_widgets/chat_widget/chat_bottom_container_widget.dart';
-import 'package:rough_app/src/common_widgets/chat_widget/receive_chat_message_widget.dart';
-import 'package:rough_app/src/common_widgets/chat_widget/send_chat_message_widget.dart';
+
 import 'package:rough_app/src/features/controllers/direct_chat_screen_controller.dart';
+import 'package:rough_app/src/features/screens/direct_chat_screen/chat_widget/receive_chat_message_widget.dart';
+import 'package:rough_app/src/features/screens/direct_chat_screen/chat_widget/send_chat_message_widget.dart';
+
+import 'chat_bottom_container_widget.dart';
 
 class ChatMessageContainerMainWidget extends StatefulWidget {
   const ChatMessageContainerMainWidget(

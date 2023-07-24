@@ -37,6 +37,7 @@ const String gGoogleLogoImage = "assets/logo/google-logo.png";
 
 const String gUser_icon_1_image = "assets/images/home_images/user_1.jpg";
 const String gUser_icon_2_image = "assets/images/home_images/user_2.png";
+String? gUser_icon_image ;
 const String gChat_icon_image = "assets/images/home_images/chat_icon.png";
 const String gDirectChat_icon_image = "assets/images/home_images/direct_chat_icon.png";
 const String gGroupChat_icon_image = "assets/images/home_images/group_chat_icon.png";
