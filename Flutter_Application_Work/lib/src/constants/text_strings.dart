@@ -3,8 +3,6 @@ String gAccountEmail = "abcd@gmail.com";
 String gAccountName = "Abcd Efgh";
 String gAccountUserName = "AbcUnique";
 
-
-
 /* Generic Texts */
 const gAppName = "TransLang";
 const gNextButton = "Next";
@@ -15,9 +13,6 @@ const String gDirectChatScreenName = "Direct Chat";
 const String gGroupChatScreenName = "Group Chat";
 const String gTranslateScreenName = "Translate";
 
-
-
-
 const String gLogin = "Login";
 const String gSignup = "Signup";
 
@@ -25,9 +20,6 @@ const String gEmail = "e-mail";
 const String gPassword = "password";
 const String gFullName = "fullname";
 const String gPhone = "phone no.";
-
-
-
 
 /* OnBoarding Text Screens */
 
@@ -50,9 +42,9 @@ const String gOnBoardingSubTitle4 =
 const String gOnBoardingCounter4 = "4/4";
 
 /* Welcome Screen Text */
-const String gWelcomeTitle = "TransLang";
+const String gWelcomeTitle = "MultiLingual Mentor";
 const String gWelcomeSubTitle =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. At dui lectus nascetur felis nibh molestie. Erat leo, amet pharetra, ridiculus at blandit.";
+    "Unlock your potential with the MultiLingual Mentor App - Learn, Grow, and Succeed across languages.";
 
 /* LogIn Screen Text */
 const String gLoginTitle = "Welcome Back";
@@ -60,7 +52,8 @@ const String gLoginSubTitle = "Make it work, make it right, make it fast.";
 const String gRememberMe = "Remember Me?";
 
 const String gForgotPassword = "Forgot Password?";
-const String gForgotPasswordEmailRequest = "Enter your Email to receive a password reset link";
+const String gForgotPasswordEmailRequest =
+    "Enter your Email to receive a password reset link";
 const String gResetPassword = "Reset Password";
 const String gAssistance = "For any assistance, please contact";
 const String gMastekEmail = "mastekinternship@gmail.com";
@@ -69,12 +62,12 @@ const String gDontHaveAnAccount = "Don't Have An Account? ";
 
 /* SignUp Screen Text */
 const String gSignupTitle = "Get On Board!";
-const String gSignUpSubTitle = "Create your profile to start your Journey with us....";
+const String gSignUpSubTitle =
+    "Create your profile to start your Journey with us....";
 const String gAlreadyHaveAnAccount = "Already have an Account? ";
 
 /* Chat Screen Text */
 const String gStartConversation = "Start Conversation";
-
 
 /* Home Screen Text */
 

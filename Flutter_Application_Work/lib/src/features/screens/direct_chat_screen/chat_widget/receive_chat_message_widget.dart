@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rough_app/src/features/controllers/direct_chat_screen_controller.dart';
 
+import '../../../../constants/colors.dart';
+
 
 class ReceivedChatMessageWidget extends StatefulWidget {
   const ReceivedChatMessageWidget({
@@ -40,6 +42,11 @@ class _ReceivedChatMessageWidgetState extends State<ReceivedChatMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
+
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: Row(
@@ -49,8 +56,8 @@ class _ReceivedChatMessageWidgetState extends State<ReceivedChatMessageWidget> {
           InkWell(
             child: Container(
               constraints: BoxConstraints(maxWidth: widget.size.width * 0.90),
-              decoration: const BoxDecoration(
-                color: Colors.red,
+              decoration: BoxDecoration(
+                color: isDarkMode ? gChatColorDark2 : gChatColorLight2,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.zero,
                   topRight: Radius.circular(10.0),

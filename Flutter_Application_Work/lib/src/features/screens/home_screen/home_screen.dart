@@ -7,6 +7,7 @@ import 'package:rough_app/src/constants/text_strings.dart';
 import 'package:rough_app/src/features/screens/home_screen/drawer_widget.dart';
 import 'package:rough_app/src/features/screens/home_screen/home_list_tile_widget.dart';
 
+import '../../../constants/colors.dart';
 import '../../../utils/helperfunctions/sharedpref_helper.dart';
 import '../../controllers/home_screen_controller.dart';
 
@@ -22,16 +23,20 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeScreenController = Get.put(HomeScreenController());
     var size = MediaQuery.of(context).size;
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Multi-Language Mentor"),
+        backgroundColor: isDarkMode ? gDarkPurple : gDarkPurple,
       ),
-      drawer: const DrawerWidget(),
+      drawer: DrawerWidget(isDarkMode: isDarkMode),
       body: SingleChildScrollView(
+
         child: Column(
           children: [
-            UserDetailContainer(),
+            UserDetailContainer(isDarkMode: isDarkMode),
             Padding(
               padding: const EdgeInsets.all(gSmallSpace),
               child: Center(
@@ -55,6 +60,8 @@ class HomeScreen extends StatelessWidget {
                         tileLeading: gChat_icon_image,
                         tileTitle: gChat,
                         controller: homeScreenController,
+                        isDarkMode: isDarkMode,
+
                       ),
                     ),
                     const SizedBox(height: gSmallSpace),
@@ -65,6 +72,7 @@ class HomeScreen extends StatelessWidget {
                         tileLeading: gGroupChat_icon_image,
                         tileTitle: gGroupChat,
                         controller: homeScreenController,
+                        isDarkMode: isDarkMode,
                       ),
                     ),
                     const SizedBox(height: gSmallSpace),
@@ -75,6 +83,7 @@ class HomeScreen extends StatelessWidget {
                         tileLeading: gDirectChat_icon_image,
                         tileTitle: gDirectChat,
                         controller: homeScreenController,
+                        isDarkMode: isDarkMode,
                       ),
                     ),
                     const SizedBox(height: gSmallSpace),
@@ -85,6 +94,7 @@ class HomeScreen extends StatelessWidget {
                         tileLeading: gTranslate_icon_image,
                         tileTitle: gTranslate,
                         controller: homeScreenController,
+                        isDarkMode: isDarkMode,
                       ),
                     ),
                   ],
@@ -100,8 +110,9 @@ class HomeScreen extends StatelessWidget {
 
 
 class UserDetailContainer extends StatefulWidget {
-  const UserDetailContainer({super.key});
+  const UserDetailContainer({super.key, required this.isDarkMode});
 
+  final bool isDarkMode;
   @override
   State<UserDetailContainer> createState() => _UserDetailContainerState();
 }
@@ -134,7 +145,7 @@ class _UserDetailContainerState extends State<UserDetailContainer> {
           padding: const EdgeInsets.all(gSmallSpace),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(gBorderRadius),
-            color: Colors.blue,
+            color: widget.isDarkMode ? gDarkPurple : gDarkPurple,
           ),
           // color: Colors.blue,
           child: Center(

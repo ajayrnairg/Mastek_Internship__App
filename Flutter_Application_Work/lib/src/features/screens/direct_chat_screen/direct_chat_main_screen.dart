@@ -5,6 +5,7 @@ import 'package:rough_app/src/features/controllers/direct_chat_screen_controller
 import 'package:rough_app/src/features/controllers/home_screen_controller.dart';
 
 import '../../../common_widgets/toggle_widget/toggle_switch_widget.dart';
+import '../../../constants/colors.dart';
 import '../../../constants/text_strings.dart';
 import 'chat_widget/chat_message_container_main_widget.dart';
 
@@ -46,11 +47,15 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
+
 
     return Scaffold(
         appBar: AppBar(
           title: const Text(gDirectChatScreenName),
+          backgroundColor: isDarkMode ? gDarkPurple : gDarkPurple,
           leading: directChatScreenController.isAnyMessageSelected
               ? IconButton(
                   onPressed: () {

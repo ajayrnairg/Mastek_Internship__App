@@ -29,8 +29,8 @@ class GElevatedButtonTheme {
       ),
       textStyle: TextStyle(fontSize: 16.0),
       foregroundColor: gSecondaryColor,
-      backgroundColor: gWhiteColor,
-      side: BorderSide(color: gSecondaryColor),
+      backgroundColor: gAccentColor,
+      side: BorderSide(color: gAccentColor),
       padding: EdgeInsets.symmetric(vertical: gButtonHeight),
 
 

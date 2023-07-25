@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:rough_app/src/features/screens/welcome_screen/welcome_screen.dart';
 
+import '../../../constants/colors.dart';
 import '../../../constants/image_strings.dart';
 import '../../../constants/text_strings.dart';
 import '../../../utils/services/auth.dart';
@@ -11,14 +12,19 @@ import '../../../utils/services/auth.dart';
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({
     super.key,
+    required this.isDarkMode
   });
+
+  final bool isDarkMode;
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: gDarkPurple),
             accountName: Text(gAccountUserName, style: Theme.of(context).textTheme.headlineMedium,),
             accountEmail: Text(gAccountEmail, style: Theme.of(context).textTheme.titleMedium,),
             currentAccountPicture: const CircleAvatar(

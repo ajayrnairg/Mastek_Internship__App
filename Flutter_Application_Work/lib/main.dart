@@ -7,6 +7,7 @@ import 'package:rough_app/src/features/screens/direct_chat_screen/direct_chat_sc
 import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
 import 'package:rough_app/src/features/screens/rough_screen/rough_screen.dart';
 import 'package:rough_app/src/features/screens/splash_screen/splash_screen.dart';
+import 'package:rough_app/src/features/screens/translate_screen/translate_screen.dart';
 import 'package:rough_app/src/features/screens/welcome_screen/welcome_screen.dart';
 import 'package:rough_app/src/utils/helperfunctions/sharedpref_helper.dart';
 import 'package:rough_app/src/utils/services/auth.dart';
@@ -37,7 +38,10 @@ class MyApp extends StatelessWidget {
             if(snapshot.hasData){
 
               return  HomeScreen();
+
+              // return TranslateScreen();
             }
+
             else{
               return
                  WelcomeScreen();

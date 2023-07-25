@@ -9,6 +9,8 @@ import 'package:permission_handler/permission_handler.dart';
 //for COdec
 import 'package:flutter_sound/flutter_sound.dart';
 
+import '../../../../constants/colors.dart';
+
 class ChatBottomContainerWidget extends StatefulWidget {
   const ChatBottomContainerWidget({
     super.key,
@@ -86,12 +88,17 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
+
     return Container(
       alignment: Alignment.bottomCenter,
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
-            color: Colors.black.withOpacity(0.8)),
+            color: isDarkMode? gTileColorDark : gDarkColor),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
@@ -142,7 +149,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                     ),
             ),
             IconButton(
-              color: Colors.blue,
+              color: isDarkMode? gPrimaryColor: gDarkPurple,
               onPressed: () async {
                 if (recorder.isRecording) {
                   // debugPrint("was running");
@@ -176,6 +183,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
             ),
 
             IconButton(
+              color: isDarkMode? gPrimaryColor: gDarkPurple,
               icon: Icon(Icons.send),
               onPressed: () {
                 widget.callback();
@@ -184,7 +192,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                 //   directChatScreenController.addMessage();
                 // });
               },
-              color: Colors.white,
+              // color: Colors.white,
             ),
           ],
         ),

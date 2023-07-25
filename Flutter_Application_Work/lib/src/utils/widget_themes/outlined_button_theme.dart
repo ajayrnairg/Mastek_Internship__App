@@ -26,7 +26,7 @@ class GOutlinedButtonTheme {
       ),
       textStyle: TextStyle(fontSize: 16.0),
       foregroundColor: gWhiteColor,
-      side: BorderSide(color: gWhiteColor),
+      side: BorderSide(color: gAccentColor),
       padding: EdgeInsets.symmetric(vertical: gButtonHeight),
     ),
   );

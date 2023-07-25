@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:rough_app/src/features/controllers/home_screen_controller.dart';
 
+import '../../../constants/colors.dart';
 import '../../../constants/sizes.dart';
 import '../../../constants/text_strings.dart';
 import '../../controllers/direct_chat_screen_controller.dart';
@@ -47,6 +48,9 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
     final homeScreenController = Get.put(HomeScreenController());
     // final directChatScreenController = Get.put(DirectChatScreenController());
 
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
@@ -54,6 +58,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(gDirectChatScreenName),
+        backgroundColor: isDarkMode ? gDarkPurple : gDarkPurple,
         leading: IconButton(
           onPressed: () {
             homeScreenController.goToHomePageFunc();
@@ -71,7 +76,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                 padding: const EdgeInsets.all(gSmallSpace),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(gBorderRadius),
-                  color: Colors.blue,
+                  color: gDarkPurple,
                 ),
                 // color: Colors.blue,
                 child: Center(
@@ -108,7 +113,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                 },
                 icon: const Icon(
                   Icons.arrow_drop_down_circle,
-                  color: Colors.blue,
+                  color: gDarkPurple,
                 ),
                 decoration: const InputDecoration(
                     labelText: gChooseFirstLang,
@@ -143,7 +148,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                 },
                 icon: const Icon(
                   Icons.arrow_drop_down_circle,
-                  color: Colors.blue,
+                  color: gDarkPurple,
                 ),
                 decoration: const InputDecoration(
                     labelText: gChooseSecondLang,
