@@ -1,3 +1,10 @@
+/* My Details */
+String gAccountEmail = "abcd@gmail.com";
+String gAccountName = "Abcd Efgh";
+String gAccountUserName = "AbcUnique";
+
+
+
 /* Generic Texts */
 const gAppName = "TransLang";
 const gNextButton = "Next";
@@ -65,11 +72,12 @@ const String gSignupTitle = "Get On Board!";
 const String gSignUpSubTitle = "Create your profile to start your Journey with us....";
 const String gAlreadyHaveAnAccount = "Already have an Account? ";
 
+/* Chat Screen Text */
+const String gStartConversation = "Start Conversation";
+
 
 /* Home Screen Text */
- String gAccountEmail = "abcd@gmail.com";
- String gAccountName = "Abcd Efgh";
- String gAccountUserName = "AbcUnique";
+
 const String gLanguages = "Languages";
 const String gSettings = "Settings";
 const String gHelpCenter = "Help Center";

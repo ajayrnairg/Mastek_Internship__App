@@ -23,6 +23,17 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController displayNameTextController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool errorAppeared = false;
+  String errorMessage = "";
+
+  displayError(int errorCode){
+    if(errorCode == 56852987){
+      errorMessage = "The email address is already in use by another account.";
+    }
+    setState(() {
+
+    });
+  }
 
   @override
   void dispose() {
@@ -57,11 +68,11 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   } else {
                     return null;
                   }
-                }
-            ),
+                }),
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(
                 controller: emailTextController,
+                onChanged: (s){errorAppeared = false;},
                 enableSuggestions: true,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -116,6 +127,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (context) => const LogInScreen()));
                     }).onError((error, stackTrace) {
+                      errorAppeared = true;
+                      displayError(error.hashCode);
                       print(
                           "Error while creating new account: ${error.toString()}");
                     });
@@ -124,6 +137,17 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 child: Text(gSignup.toUpperCase()),
               ),
             ),
+            errorAppeared
+                ? Center(
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, gFormHeight, 0, 0),
+                      child: Text(
+                        errorMessage,
+                        style: TextStyle(fontSize: 10, color: Colors.red),
+                      ),
+                    ),
+                )
+                : Container()
           ],
         ),
       ),

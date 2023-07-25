@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       theme: GAppTheme.lightTheme,
       darkTheme: GAppTheme.darkTheme,
       themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
       home:
       FutureBuilder(
           future: AuthMethods().getCurrentUser(),

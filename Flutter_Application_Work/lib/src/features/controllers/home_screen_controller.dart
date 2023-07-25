@@ -37,7 +37,7 @@ class HomeScreenController extends GetxController{
   }
 
   goToHomePageFunc(){
-    Get.back();
+    Get.offAll(()=>HomeScreen());
   }
 
   goBackOnePageFunc(){

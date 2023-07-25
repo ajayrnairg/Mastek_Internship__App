@@ -19,7 +19,7 @@ class DrawerWidget extends StatelessWidget {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(gAccountName, style: Theme.of(context).textTheme.headlineMedium,),
+            accountName: Text(gAccountUserName, style: Theme.of(context).textTheme.headlineMedium,),
             accountEmail: Text(gAccountEmail, style: Theme.of(context).textTheme.titleMedium,),
             currentAccountPicture: const CircleAvatar(
               foregroundImage: AssetImage(gUser_icon_2_image),
