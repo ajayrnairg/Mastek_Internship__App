@@ -50,9 +50,9 @@ class VoiceAndLanguages {
         }
       case 'Tamil':
         if (gender == "MALE") {
-          return ["ta-IN-Standard-D", "ta-IN"];
+          return ["ta-IN-Standard-B", "ta-IN"];
         } else {
-          return ["ta-IN-Standard-C", "ta-IN"];
+          return ["ta-IN-Standard-A", "ta-IN"];
         }
       case 'Telugu':
         if (gender == "MALE") {

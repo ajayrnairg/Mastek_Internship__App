@@ -20,6 +20,7 @@ class ChatMessageContainerMainWidget extends StatefulWidget {
   final String selectedLang1, selectedLang2;
   final Function updateParentUI;
 
+
   @override
   State<ChatMessageContainerMainWidget> createState() =>
       _ChatMessageContainerMainWidgetState();
@@ -27,6 +28,10 @@ class ChatMessageContainerMainWidget extends StatefulWidget {
 
 class _ChatMessageContainerMainWidgetState
     extends State<ChatMessageContainerMainWidget> {
+
+
+
+
   @override
   void initState() {
     super.initState();
@@ -67,10 +72,11 @@ class _ChatMessageContainerMainWidgetState
             height: widget.size.height * 0.665,
             child: ListView.builder(
               shrinkWrap: true,
-              reverse: false,
+              reverse: true,
               itemCount:
                   widget.directChatScreenController.combinedMessages.length,
               itemBuilder: (context, index) {
+
                 if (widget.directChatScreenController.combinedMessages[index]
                         ["message_language_side"] ==
                     "Left") {

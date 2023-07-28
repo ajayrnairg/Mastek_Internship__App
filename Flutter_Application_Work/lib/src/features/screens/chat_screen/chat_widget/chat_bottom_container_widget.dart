@@ -86,9 +86,10 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
 
       alignment: Alignment.bottomCenter,
       child: Container(
+
         // height: double.infinity,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
+            // borderRadius: BorderRadius.circular(10.0),
             color: Colors.black.withOpacity(0.8)),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
@@ -145,7 +146,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                 if (recorder.isRecording) {
                   // debugPrint("was running");
                   await stop();
-
+                  widget.chatScreenController.addMessage(widget.selectedLanguage, true);
                   // print("adding message");
                   // if (widget.directChatScreenController.selectedLanguages[0]) {
                   //   await widget.directChatScreenController.buildAndAddMessage(
@@ -165,7 +166,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                 } else {
                   // debugPrint("was not running");
                   await record(
-                      "chattest");
+                      "ChatScreen");
                   // debugPrint("now started");
                 }
 
@@ -177,6 +178,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
             IconButton(
               icon: Icon(Icons.send),
               onPressed: () {
+                widget.chatScreenController.addMessage(widget.selectedLanguage,false);
                 // widget.callback();
 
                 // setState(() {

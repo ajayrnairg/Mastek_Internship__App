@@ -43,18 +43,40 @@ class DatabaseMethods {
     }
   }
 
-  Future deleteChatRoom(String chatRoomID) async{
+  Future<Stream<QuerySnapshot>> getChatRoomMessages(String chatRoomID) async {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomID)
+        .collection("messages")
+        .orderBy("message_timestamp", descending: true)
+        .snapshots();
+  }
+
+  Future deleteChatRoom(String chatRoomID) async {
     final snapShot = await FirebaseFirestore.instance
         .collection("chatRooms")
         .doc(chatRoomID)
         .get();
 
     if (snapShot.exists) {
-      return await FirebaseFirestore.instance.collection("chatRooms").doc(chatRoomID).delete();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("chatRooms")
+          .doc(chatRoomID)
+          .collection("messages")
+          .get();
+
+      for (DocumentSnapshot docSnapshot in querySnapshot.docs) {
+        // Delete each document in the collection
+        await docSnapshot.reference.delete();
+      }
+
+      return await FirebaseFirestore.instance
+          .collection("chatRooms")
+          .doc(chatRoomID)
+          .delete();
     } else {
       return false;
     }
-
   }
 
   Future<void> addMessageToChatRoom(String chatRoomID, String messageID,

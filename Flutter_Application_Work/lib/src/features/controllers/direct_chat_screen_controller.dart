@@ -121,7 +121,12 @@ class DirectChatScreenController extends GetxController {
         "message_timestamp":
             "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}:${DateTime.now().millisecond}"
       };
-      combinedMessages.add(newMessageData);
+
+      if (selectedMessageIndex != null) //corner case
+          {
+        selectedMessageIndex = selectedMessageIndex! + 1;
+      }
+      combinedMessages.insert(0,newMessageData);
     }
     messageTextEditingController.text = "";
   }

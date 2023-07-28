@@ -129,12 +129,7 @@ class _TranslateAppSampleState extends State<TranslateAppSample> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {});
-            },
-            icon: const Icon(Icons.abc),
-          )
+
         ],
       ),
       body: SafeArea(

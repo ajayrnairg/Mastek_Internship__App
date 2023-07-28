@@ -27,9 +27,21 @@ class DrawerWidget extends StatelessWidget {
             decoration: BoxDecoration(color: gDarkPurple),
             accountName: Text(gAccountUserName, style: Theme.of(context).textTheme.headlineMedium,),
             accountEmail: Text(gAccountEmail, style: Theme.of(context).textTheme.titleMedium,),
-            currentAccountPicture: const CircleAvatar(
-              foregroundImage: AssetImage(gUser_icon_2_image),
-            ),
+            currentAccountPicture: (gUser_icon_image != null) ?
+            ClipOval(
+                child: Image.network(
+                  gUser_icon_image!,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                )):
+            ClipOval(
+                child: Image.asset(
+                  gUser_icon_2_image!,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                )),
           ),
           Column(
             children: [
