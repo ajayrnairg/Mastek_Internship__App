@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMethods {
+
+  //************************Login and SignUP methods*************************
   Future addGoogleUserInfoToDB(
       String userId, Map<String, dynamic> userInfoMap) async {
     FirebaseFirestore.instance.collection("users").doc(userId).set(userInfoMap);
@@ -26,6 +28,16 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  //************************Notification methods*************************
+  addTokenDataToUserInfo(String token, String userID)async{
+    final data = {"token": token};
+    FirebaseFirestore.instance.collection("users").doc(userID).set(data, SetOptions(merge: true));
+  }
+
+
+
+
+  //************************chatRoom methods*************************
   Future createChatRoom(
       String chatRoomID, Map<String, dynamic> roomInfoMap) async {
     final snapShot = await FirebaseFirestore.instance
@@ -88,4 +100,11 @@ class DatabaseMethods {
         .doc(messageID)
         .set(messageInfoMap);
   }
+
+
+
+
+
+
+
 }

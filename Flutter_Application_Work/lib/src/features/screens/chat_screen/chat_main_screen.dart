@@ -10,13 +10,11 @@ import 'package:rough_app/src/features/screens/chat_screen/chat_widget/receive_c
 import 'package:rough_app/src/features/screens/chat_screen/chat_widget/send_chat_message_widget.dart';
 import 'package:rough_app/src/utils/services/database.dart';
 
-
 class ChatMainScreen extends StatefulWidget {
   const ChatMainScreen(
       {super.key,
-        required this.selectedLanguage,
-        required this.chatScreenController});
-
+      required this.selectedLanguage,
+      required this.chatScreenController});
 
   final String selectedLanguage;
   final ChatScreenController chatScreenController;
@@ -57,18 +55,21 @@ class _ChatMainScreenState extends State<ChatMainScreen> {
       DocumentSnapshot ds = querySnapshot.docs.first;
       // print("first element from stream ${firstElement["message_text"]}");
 
-      widget.chatScreenController.buildAndAddDataToLocalDSA(
-          widget.selectedLanguage,
-          ds["message_id"],
-          ds["message_text"],
-          ds["message_text_language"],
-          ds["sendBy"],
-          ds["senderImageURL"],
-          DateTime.fromMillisecondsSinceEpoch(
-              ds["message_timestamp"].millisecondsSinceEpoch)
-              .toString());
-
-      setState(() {});
+      widget.chatScreenController
+          .buildAndAddDataToLocalDSA(
+              widget.selectedLanguage,
+              ds["message_id"],
+              ds["message_text"],
+              ds["message_text_language"],
+              ds["sendBy"],
+              ds["senderImageURL"],
+              DateTime.fromMillisecondsSinceEpoch(
+                      ds["message_timestamp"].millisecondsSinceEpoch)
+                  .toString())
+          .then((value) {
+            print("updating UI");
+        setState(() {});
+      });
     });
   }
 
@@ -78,7 +79,6 @@ class _ChatMainScreenState extends State<ChatMainScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -87,34 +87,36 @@ class _ChatMainScreenState extends State<ChatMainScreen> {
         title: Text("Chat - ${widget.chatScreenController.selectedUserName}"),
         leading: widget.chatScreenController.isAnyMessageSelected
             ? IconButton(
-          onPressed: () {
-            deselectMessage();
-          },
-          icon: const Icon(Icons.arrow_back),
-        )
+                onPressed: () {
+                  deselectMessage();
+                },
+                icon: const Icon(Icons.arrow_back),
+              )
             : IconButton(
-          onPressed: () async {
-            widget.chatScreenController.combinedMessages = [];
-            _messageStreamSubscription?.cancel();
-            await widget.chatScreenController.deleteChatRoom();
-            widget.chatScreenController.clearData();
-            widget.chatScreenController.goBackOnePageFunc();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
+                onPressed: () async {
+                  widget.chatScreenController.combinedMessages = [];
+                  _messageStreamSubscription?.cancel();
+                  await widget.chatScreenController.deleteChatRoom();
+                  widget.chatScreenController.clearData();
+                  widget.chatScreenController.goBackOnePageFunc();
+                },
+                icon: const Icon(Icons.arrow_back_ios),
+              ),
         actions: widget.chatScreenController.isAnyMessageSelected
             ? [
-          IconButton(
-              onPressed: () {
-                widget.chatScreenController.addSelectedMessageToClipboard();
-              },
-              icon: const Icon(Icons.copy)),
-          IconButton(
-              onPressed: () {
-                widget.chatScreenController.playSelectedMessageAsAudio(widget.selectedLanguage);
-              },
-              icon: const Icon(Icons.volume_up))
-        ]
+                IconButton(
+                    onPressed: () {
+                      widget.chatScreenController
+                          .addSelectedMessageToClipboard();
+                    },
+                    icon: const Icon(Icons.copy)),
+                IconButton(
+                    onPressed: () {
+                      widget.chatScreenController
+                          .playSelectedMessageAsAudio(widget.selectedLanguage);
+                    },
+                    icon: const Icon(Icons.volume_up))
+              ]
             : null,
       ),
       body: Center(
@@ -133,43 +135,43 @@ class _ChatMainScreenState extends State<ChatMainScreen> {
                         shrinkWrap: true,
                         reverse: true,
                         itemCount:
-                        widget.chatScreenController.combinedMessages.length,
+                            widget.chatScreenController.combinedMessages.length,
                         itemBuilder: (context, index) {
                           if (widget.chatScreenController
-                              .combinedMessages[index]["message_sent_by"] ==
+                                  .combinedMessages[index]["message_sent_by"] ==
                               gAccountUserName) {
                             return Container(
                               color: widget
-                                  .chatScreenController.isAnyMessageSelected
+                                      .chatScreenController.isAnyMessageSelected
                                   ? (widget.chatScreenController
-                                  .selectedMessageIndex ==
-                                  index)
-                                  ? Colors.black.withOpacity(0.5)
-                                  : null
+                                              .selectedMessageIndex ==
+                                          index)
+                                      ? Colors.black.withOpacity(0.5)
+                                      : null
                                   : null,
                               child: SendChatMessageWidget(
                                 index: index,
                                 size: size,
                                 chatScreenController:
-                                widget.chatScreenController,
+                                    widget.chatScreenController,
                                 updateParentUI: updateMyUI,
                               ),
                             );
                           } else {
                             return Container(
                               color: widget
-                                  .chatScreenController.isAnyMessageSelected
+                                      .chatScreenController.isAnyMessageSelected
                                   ? (widget.chatScreenController
-                                  .selectedMessageIndex ==
-                                  index)
-                                  ? Colors.black.withOpacity(0.5)
-                                  : null
+                                              .selectedMessageIndex ==
+                                          index)
+                                      ? Colors.black.withOpacity(0.5)
+                                      : null
                                   : null,
                               child: ReceivedChatMessageWidget(
                                 index: index,
                                 size: size,
                                 chatScreenController:
-                                widget.chatScreenController,
+                                    widget.chatScreenController,
                                 updateParentUI: updateMyUI,
                               ),
                             );

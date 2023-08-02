@@ -6,6 +6,7 @@ import 'package:rough_app/src/constants/sizes.dart';
 import 'package:rough_app/src/constants/text_strings.dart';
 import 'package:rough_app/src/features/screens/home_screen/drawer_widget.dart';
 import 'package:rough_app/src/features/screens/home_screen/home_list_tile_widget.dart';
+import 'package:rough_app/src/utils/services/notification_services.dart';
 
 import '../../../constants/colors.dart';
 import '../../../utils/helperfunctions/sharedpref_helper.dart';
@@ -118,8 +119,10 @@ class UserDetailContainer extends StatefulWidget {
 }
 
 class _UserDetailContainerState extends State<UserDetailContainer> {
+  NotificationServices notificationServices = NotificationServices();
 
  getMyInfo() async{
+   gAccountID = (await SharedPreferenceHelper().getUserId())!;
     gAccountEmail = (await SharedPreferenceHelper().getUserEmail())!;
     gAccountName = (await SharedPreferenceHelper().getDisplayName())!;
     gAccountUserName = (await SharedPreferenceHelper().getUserName())!;
@@ -133,8 +136,17 @@ class _UserDetailContainerState extends State<UserDetailContainer> {
   @override
   void initState() {
     // TODO: implement initState
-    getMyInfo();
+
     super.initState();
+    getMyInfo();
+    notificationServices.requestNotificationPermission();
+    notificationServices.firebaseMessagingInit(context);
+    notificationServices.interactWithNotification(context);
+    notificationServices.getDeviceToken().then((value) {
+      print("token:");
+      print(value);
+    });
+    notificationServices.hasTokenRefreshed();
   }
 
   @override

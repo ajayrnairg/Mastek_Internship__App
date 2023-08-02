@@ -52,6 +52,28 @@ class _ReceivedChatMessageWidgetState extends State<ReceivedChatMessageWidget> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          Container(
+            margin: const EdgeInsets.only(right: 8.0),
+            // color: Colors.red,
+            child: (widget.chatScreenController
+                .selectedUserProfilePicURL !=
+                null)
+                ? ClipOval(
+                child: Image.network(
+                  widget.chatScreenController
+                      .selectedUserProfilePicURL!,
+                  width: 25,
+                  height: 25,
+                  fit: BoxFit.cover,
+                ))
+                : ClipOval(
+                child: Image.asset(
+                  gUser_icon_2_image!,
+                  width: 25,
+                  height: 25,
+                  fit: BoxFit.cover,
+                )),
+          ),
           InkWell(
             child: Container(
               constraints: BoxConstraints(maxWidth: widget.size.width * 0.80),
@@ -67,28 +89,7 @@ class _ReceivedChatMessageWidgetState extends State<ReceivedChatMessageWidget> {
               child: Wrap(
                 alignment: WrapAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 8.0),
-                    // color: Colors.red,
-                    child: (widget.chatScreenController
-                                .selectedUserProfilePicURL !=
-                            null)
-                        ? ClipOval(
-                            child: Image.network(
-                            widget.chatScreenController
-                                .selectedUserProfilePicURL!,
-                            width: 25,
-                            height: 25,
-                            fit: BoxFit.cover,
-                          ))
-                        : ClipOval(
-                            child: Image.asset(
-                            gUser_icon_2_image!,
-                            width: 25,
-                            height: 25,
-                            fit: BoxFit.cover,
-                          )),
-                  ),
+
                   Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: RichText(

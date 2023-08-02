@@ -1,5 +1,6 @@
 /* My Details */
 String gAccountEmail = "abcd@gmail.com";
+String gAccountID = "abcd123";
 String gAccountName = "Abcd Efgh";
 String gAccountUserName = "AbcUnique";
 
@@ -68,6 +69,7 @@ const String gAlreadyHaveAnAccount = "Already have an Account? ";
 
 /* Chat Screen Text */
 const String gStartConversation = "Start Conversation";
+const String gDecline = "Decline";
 
 /* Home Screen Text */
 

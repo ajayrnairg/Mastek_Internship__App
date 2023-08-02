@@ -36,19 +36,20 @@ class _ChatScreenState extends State<ChatScreen> {
     gLanguage4,
     gLanguage5,
     gLanguage6,
-    gLanguage7,
   ];
 
   String dropdown1Value = languageList.first;
 
-  handleListTileTap(int index, String userName, String displayName,
-      String? profilePicURL, String userEmail) {
+  handleListTileTap(int index,String userID, String userName, String displayName,
+      String? profilePicURL, String userEmail, String userToken) {
     isAnyUserSelected = true;
     selectedIndex = index;
+    chatScreenController.selectedUserID = userID;
     chatScreenController.selectedUserDisplayName = displayName;
     chatScreenController.selectedUserEmail = userEmail;
     chatScreenController.selectedUserName = userName;
     chatScreenController.selectedUserProfilePicURL = profilePicURL;
+    chatScreenController.selectedUserToken = userToken;
     setState(() {});
   }
 
@@ -82,10 +83,13 @@ class _ChatScreenState extends State<ChatScreen> {
                             : () {
                                 handleListTileTap(
                                     index,
+                                    ds["id"],
                                     ds["username"],
                                     ds["displayname"],
                                     ds["profileURL"],
-                                    ds["email"]);
+                                    ds["email"],
+                                    ds["token"]
+                                );
                               },
                         child: Container(
                           color: (isAnyUserSelected && selectedIndex == index)
@@ -173,10 +177,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                 if (isAnyUserSelected) {
                                   isAnyUserSelected = false;
                                   selectedIndex = -1;
+                                  chatScreenController.selectedUserID = null;
                                   chatScreenController.selectedUserName = null;
                                   chatScreenController.selectedUserDisplayName = null;
                                   chatScreenController.selectedUserProfilePicURL = null;
                                   chatScreenController.selectedUserEmail = null;
+                                  chatScreenController.selectedUserToken = null;
                                   setState(() {});
                                 } else {
                                   isSearching = false;
@@ -234,6 +240,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: ElevatedButton(
                           onPressed: () async{
                             await chatScreenController.generateChatRoom();
+                            await chatScreenController.inviteUserToChatRoom();
                             chatScreenController.goToChatMainScreenFunc(dropdown1Value, chatScreenController);
                           },
                           child: Text(

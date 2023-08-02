@@ -16,14 +16,17 @@ import '../../utils/apis/speechToText.dart';
 import '../../utils/apis/translation_api.dart';
 import '../../utils/helperfunctions/languages.dart';
 import '../../utils/helperfunctions/voiceAndLanguages.dart';
+import '../../utils/services/notification_services.dart';
 
 class ChatScreenController extends GetxController {
   static ChatScreenController get find => Get.find();
 
-  String? selectedUserName,
+  String? selectedUserID,
+      selectedUserName,
       selectedUserDisplayName,
       selectedUserProfilePicURL,
-      selectedUserEmail;
+      selectedUserEmail,
+      selectedUserToken;
 
   String chatRoomID = "";
   String messageID = "";
@@ -37,6 +40,10 @@ class ChatScreenController extends GetxController {
   List<Map<String, String>> combinedMessages = [];
 
   TextEditingController messageTextEditingController = TextEditingController();
+
+  NotificationServices notificationServices = NotificationServices();
+
+
 
   //helper methods
   void printData() {
@@ -94,7 +101,7 @@ class ChatScreenController extends GetxController {
   }
 
   //Methods involving local DSA
-  buildAndAddDataToLocalDSA(
+  Future<void> buildAndAddDataToLocalDSA(
     String selectedLanguage,
     String messageID,
     String messageText,
@@ -166,10 +173,29 @@ class ChatScreenController extends GetxController {
     }
   }
 
+  inviteUserToChatRoom() async{
+    chatRoomID = getChatRoomIdByUsernames(gAccountUserName, selectedUserName!);
+    Map<String,dynamic> roomDetails = {
+      "roomID": chatRoomID,
+      "roomType": "chatRoom"
+    };
+    Map<String,dynamic> senderDetails = {
+      "UserID": gAccountID,
+      "UserEmail": gAccountEmail,
+      "UserName": gAccountUserName,
+      "UserDisplayName": gAccountName,
+      "UserProfilePic": (gUser_icon_image != null)? gUser_icon_image : "",
+    };
+    notificationServices.sendPushNotificationToUser(selectedUserToken!, roomDetails, senderDetails);
+
+  }
+
+
+
   generateChatRoom() async {
     chatRoomID = getChatRoomIdByUsernames(gAccountUserName, selectedUserName!);
     Map<String, dynamic> chatRoomInfoMap = {
-      "room_id": chatRoomID,
+      "roomID": chatRoomID,
       "createdBy": gAccountUserName,
       "members": [gAccountUserName, selectedUserName]
     };

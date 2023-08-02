@@ -1,10 +1,3 @@
-plugins {
-//    id 'com.android.application'
-
-    // Add the ID of the plugin
-    id 'com.google.gms.google-services'
-
-}
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -31,6 +24,7 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {

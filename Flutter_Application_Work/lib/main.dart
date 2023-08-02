@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:rough_app/src/constants/image_strings.dart';
@@ -16,13 +17,17 @@ import 'package:rough_app/src/utils/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundMessageHandler);
   runApp(const MyApp());
+}
+
+@pragma("vm:entry-point")
+Future<void> firebaseMessagingBackgroundMessageHandler(RemoteMessage message)async{
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
