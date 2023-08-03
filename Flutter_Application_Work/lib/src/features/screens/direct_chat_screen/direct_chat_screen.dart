@@ -29,7 +29,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
     gLanguage4,
     gLanguage5,
     gLanguage6,
-    gLanguage7,
+
   ];
   String? _selectedVal1 = "";
   final dropDownListItems2 = [
@@ -39,7 +39,7 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
     gLanguage4,
     gLanguage5,
     gLanguage6,
-    gLanguage7,
+
   ];
   String? _selectedVal2 = "";
 

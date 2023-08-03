@@ -92,12 +92,12 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
                 child: Container(
                   child: Center(
                     child: ToggleButtons(
-                      borderColor: Colors.blue,
+                      borderColor: gDarkPurple,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      selectedBorderColor: Colors.blue,
+                      selectedBorderColor: gDarkPurple,
                       selectedColor: Colors.white,
-                      fillColor: Colors.blue,
-                      color: Colors.blue,
+                      fillColor: gDarkPurple,
+                      color: gDarkPurple,
                       direction: Axis.horizontal,
                       constraints: BoxConstraints(
                         minHeight: 40.0,

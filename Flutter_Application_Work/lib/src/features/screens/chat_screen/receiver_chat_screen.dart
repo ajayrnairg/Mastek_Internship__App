@@ -15,6 +15,8 @@ class ReceiverChatScreen extends StatefulWidget {
     required this.senderUserName,
     required this.senderDisplayName,
     required this.senderProfilePic,
+    required this.senderToken,
+
   });
 
   final String chatRoomID;
@@ -23,6 +25,7 @@ class ReceiverChatScreen extends StatefulWidget {
   final String senderUserName;
   final String senderDisplayName;
   final String senderProfilePic;
+  final String senderToken;
 
   @override
   State<ReceiverChatScreen> createState() => _ReceiverChatScreenState();
@@ -50,7 +53,14 @@ class _ReceiverChatScreenState extends State<ReceiverChatScreen> {
     chatScreenController.selectedUserEmail = widget.senderEmail;
     chatScreenController.selectedUserName = widget.senderUserName;
     chatScreenController.selectedUserProfilePicURL = (widget.senderProfilePic.length == 0)? null : widget.senderProfilePic;
+    chatScreenController.selectedUserToken = widget.senderToken;
+  }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setRoomAndSelectedUserDetails();
   }
 
   @override
@@ -117,7 +127,9 @@ class _ReceiverChatScreenState extends State<ReceiverChatScreen> {
                   onPressed: () async {
                     // await chatScreenController.generateChatRoom();
                     // await chatScreenController.inviteUserToChatRoom();
+
                     await setRoomAndSelectedUserDetails();
+                    await chatScreenController.sendAcceptanceAlert();
                     chatScreenController.goToChatMainScreenFunc(
                         dropdown1Value, chatScreenController);
                   },
@@ -133,6 +145,8 @@ class _ReceiverChatScreenState extends State<ReceiverChatScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
+                    await setRoomAndSelectedUserDetails();
+                    await chatScreenController.sendRejectionAlert();
                     homeScreenController.goToHomePageFunc();
                   },
                   child: Text(

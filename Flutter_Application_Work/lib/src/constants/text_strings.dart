@@ -3,6 +3,7 @@ String gAccountEmail = "abcd@gmail.com";
 String gAccountID = "abcd123";
 String gAccountName = "Abcd Efgh";
 String gAccountUserName = "AbcUnique";
+String gAccountUserFCMToken = "";
 
 /* Generic Texts */
 const gAppName = "TransLang";

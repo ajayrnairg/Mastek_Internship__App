@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -92,8 +93,13 @@ class NotificationServices {
       // print(message.notification!.body.toString());
 
       if (Platform.isAndroid) {
-        localNotificationInit(context, message);
-        showNotification(message);
+        if (message.data["type"] == "Alert") {
+          print("hello");
+          showToast(context, message.data["message"]);
+        } else {
+          localNotificationInit(context, message);
+          showNotification(message);
+        }
       } else {
         showNotification(message);
       }
@@ -103,12 +109,14 @@ class NotificationServices {
   void handleMessage(BuildContext context, RemoteMessage message) {
     if (message.data["type"] == "chatRoomInvite") {
       Get.offAll(() => ReceiverChatScreen(
-          chatRoomID: message.data["chatRoomID"],
-          senderID: message.data["senderID"],
-          senderEmail: message.data["senderEmail"],
-          senderUserName: message.data["senderUserName"],
-          senderDisplayName: message.data["senderDisplayName"],
-          senderProfilePic: message.data["senderProfilePic"]));
+            chatRoomID: message.data["chatRoomID"],
+            senderID: message.data["senderID"],
+            senderEmail: message.data["senderEmail"],
+            senderUserName: message.data["senderUserName"],
+            senderDisplayName: message.data["senderDisplayName"],
+            senderProfilePic: message.data["senderProfilePic"],
+            senderToken: message.data["senderToken"],
+          ));
     }
   }
 
@@ -145,7 +153,8 @@ class NotificationServices {
         'senderEmail': '${senderDetails["UserEmail"]}',
         'senderUserName': '${senderDetails["UserName"]}',
         'senderDisplayName': '${senderDetails["UserDisplayName"]}',
-        'senderProfilePic': '${senderDetails["UserProfilePic"]}'
+        'senderProfilePic': '${senderDetails["UserProfilePic"]}',
+        'senderToken': '${senderDetails["UserToken"]}',
       }
     };
     await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
@@ -157,6 +166,42 @@ class NotificationServices {
         body: jsonEncode(payload));
   }
 
+  void sendAlertToUser(
+    String token,
+    Map<String, dynamic> alertDetails,
+  ) async {
+    var payload = {
+      'to': token,
+      'priority': 'high',
+      'notification': {
+        'title': '${alertDetails["type"]} Alert',
+        'body': '${alertDetails["message"]}'
+      },
+      'data': {
+        'type': 'Alert',
+        'message': '${alertDetails["message"]}',
+      }
+    };
+    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':
+              'key=AAAATNywlaU:APA91bH2pESkNVqvpw6DRJVX_RODsclo14rBLelQhHOmE-O7uqa6NMCUttLGztVJPHsTa5DlwW19eLAPayuFzsrrCOWEoATRllIcQcgCfqEQFBRatEAUuDQ70ofSsKliQMqStC_OLZwf'
+        },
+        body: jsonEncode(payload));
+  }
+
+  void showToast(BuildContext context, String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      gravity: ToastGravity.TOP,
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.purple,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
   //Token Management
   // Future<void> saveToken(String token) async {
   //   await FirebaseFirestore.instance.collection("UserTokens").doc("User2").set({
@@ -166,6 +211,9 @@ class NotificationServices {
 
   Future<String> getDeviceToken() async {
     String? token = await messaging.getToken();
+    if (token != null) {
+      gAccountUserFCMToken = token;
+    }
     DatabaseMethods().addTokenDataToUserInfo(token!, gAccountID);
     return token;
   }

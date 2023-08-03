@@ -185,10 +185,27 @@ class ChatScreenController extends GetxController {
       "UserName": gAccountUserName,
       "UserDisplayName": gAccountName,
       "UserProfilePic": (gUser_icon_image != null)? gUser_icon_image : "",
+      "UserToken": gAccountUserFCMToken
     };
     notificationServices.sendPushNotificationToUser(selectedUserToken!, roomDetails, senderDetails);
-
   }
+
+  sendAcceptanceAlert()async{
+    Map<String,dynamic> alertDetails = {
+      "type" : "Acceptance",
+      "message": "$gAccountUserName has joined your room."
+    };
+    notificationServices.sendAlertToUser(selectedUserToken!, alertDetails);
+  }
+
+  sendRejectionAlert()async{
+    Map<String,dynamic> alertDetails = {
+      "type" : "Rejection",
+      "message": "$gAccountUserName has declined your invitation."
+    };
+    notificationServices.sendAlertToUser(selectedUserToken!, alertDetails);
+  }
+
 
 
 
