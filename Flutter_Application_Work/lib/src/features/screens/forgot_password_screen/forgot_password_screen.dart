@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:rough_app/src/constants/colors.dart';
 import 'package:rough_app/src/constants/text_strings.dart';
 
+import '../../../constants/sizes.dart';
 import '../../../utils/services/auth.dart';
 import '../../controllers/signup_login_screen_controller.dart';
 
@@ -20,6 +22,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final formKey = GlobalKey<FormState>();
   final emailTextController = TextEditingController();
   bool mailSent = false;
+  String? errorMessage;
 
   void onSuccessfulMail() {
     setState(() {
@@ -62,6 +65,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
                     controller: emailTextController,
+                    onChanged: (p){setState(() {
+                      errorMessage =null;
+                    });},
                     enableSuggestions: true,
                     keyboardType: TextInputType.emailAddress,
                     style: Theme.of(context).textTheme.titleSmall,
@@ -80,13 +86,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       }
                     }),
               ),
+              (errorMessage != null)
+                  ? Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(8.0, 20, 8.0, 0.0),
+                  child: Text(
+                    errorMessage!,
+                    style: TextStyle(fontSize: 12, color: Colors.red),
+                  ),
+                ),
+              )
+                  : Container(),
               mailSent
                   ? const Padding(
                       padding: EdgeInsets.fromLTRB(8.0, 20, 8.0, 0.0),
                       child: Text(
                         "Password Reset Mail sent Successfully",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15, color: Colors.blue),
+                        style: TextStyle(fontSize: 15, color: Colors.green),
                       ))
                   : Container(),
               const SizedBox(
@@ -97,25 +114,39 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final isValidForm = formKey.currentState!.validate();
                       if (isValidForm) {
-                        AuthMethods()
+                        errorMessage = await AuthMethods()
                             .passwordReset(
                           emailTextController.text,
-                        )
-                            .then((value) {
+                        );
+                        mailSent = false;
+                        setState(() {
+
+                        });
+
+                        if(errorMessage == null){
                           print("Password Reset Mail sent Successfully");
                           onSuccessfulMail();
-                          // widget.controller.goToHomePageFunc();
-                          // Get.offAll(()=>const HomeScreen());
-                          // Navigator.pushReplacement(context,
-                          //     MaterialPageRoute(builder: (context) => const HomeScreen()));
-                        }).onError((error, stackTrace) {
-                          mailSent = false;
-                          print(
-                              "Error sending Password Reset Mail:  ${error.toString()}");
-                        });
+                        }
+                        //
+                        // AuthMethods()
+                        //     .passwordReset(
+                        //   emailTextController.text,
+                        // )
+                        //     .then((value) {
+                        //   print("Password Reset Mail sent Successfully");
+                        //   onSuccessfulMail();
+                        //   // widget.controller.goToHomePageFunc();
+                        //   // Get.offAll(()=>const HomeScreen());
+                        //   // Navigator.pushReplacement(context,
+                        //   //     MaterialPageRoute(builder: (context) => const HomeScreen()));
+                        // }).onError((error, stackTrace) {
+                        //   mailSent = false;
+                        //   print(
+                        //       "Error sending Password Reset Mail:  ${error.toString()}");
+                        // });
                       }
                     },
                     child: Text(

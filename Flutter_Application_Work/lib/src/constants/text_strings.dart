@@ -65,7 +65,7 @@ const String gDontHaveAnAccount = "Don't Have An Account? ";
 /* SignUp Screen Text */
 const String gSignupTitle = "Get On Board!";
 const String gSignUpSubTitle =
-    "Create your profile to start your Journey with us....";
+    "Create your profile to start your Journey with us.";
 const String gAlreadyHaveAnAccount = "Already have an Account? ";
 
 /* Chat Screen Text */

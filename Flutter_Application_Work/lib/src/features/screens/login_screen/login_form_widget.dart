@@ -25,6 +25,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   TextEditingController passwordTextController = TextEditingController();
   bool hidePassword = true;
   final formKey = GlobalKey<FormState>();
+  String? errorMessage;
 
   @override
   void dispose() {
@@ -45,103 +46,125 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: gFormHeight - 10.0),
-        child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                  controller: emailTextController,
-                  enableSuggestions: true,
-                  keyboardType: TextInputType.emailAddress,
-                  style: Theme.of(context).textTheme.titleSmall,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person_outline_outlined),
-                    labelText: gEmail,
-                    hintText: gEmail,
-                    // border: OutlineInputBorder(),
-                  ),
-                  validator: (emailId) {
-                    if (emailId != null && !EmailValidator.validate(emailId)) {
-                      return "Enter a valid email";
-                    } else {
-                      return null;
-                    }
-                  }),
-              const SizedBox(height: gFormHeight - 20.0),
-              TextFormField(
-                controller: passwordTextController,
-                obscureText: hidePassword,
-                enableSuggestions: false,
-                autocorrect: false,
-                keyboardType: TextInputType.visiblePassword,
+      padding: const EdgeInsets.symmetric(vertical: gFormHeight - 10.0),
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+                controller: emailTextController,
+                enableSuggestions: true,
+                keyboardType: TextInputType.emailAddress,
                 style: Theme.of(context).textTheme.titleSmall,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.fingerprint),
-                  labelText: gPassword,
-                  hintText: gPassword,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.person_outline_outlined),
+                  labelText: gEmail,
+                  hintText: gEmail,
                   // border: OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      togglePassword();
-                    },
-                    icon: hidePassword
-                        ? const Icon(Icons.visibility_off)
-                        : const Icon(Icons.remove_red_eye_sharp),
-                  ),
                 ),
-                validator: (value) {
-                  if (value != null && value.contains(" ")) {
-                    return "Password cannot contain empty spaces.";
-                  } else if (value != null && value.length < 6) {
-                    return "Enter minimum 6 characters";
+                validator: (emailId) {
+                  if (emailId != null && !EmailValidator.validate(emailId)) {
+                    return "Enter a valid email";
                   } else {
                     return null;
                   }
+                }),
+            const SizedBox(height: gFormHeight - 20.0),
+            TextFormField(
+              controller: passwordTextController,
+              obscureText: hidePassword,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.visiblePassword,
+              style: Theme.of(context).textTheme.titleSmall,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.fingerprint),
+                labelText: gPassword,
+                hintText: gPassword,
+                // border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    togglePassword();
+                  },
+                  icon: hidePassword
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.remove_red_eye_sharp),
+                ),
+              ),
+              validator: (value) {
+                if (value != null && value.contains(" ")) {
+                  return "Password cannot contain empty spaces.";
+                } else if (value != null && value.length < 6) {
+                  return "Enter minimum 6 characters";
+                } else {
+                  return null;
+                }
+              },
+            ),
+            (errorMessage != null)
+                ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, gFormHeight, 0, 0),
+                      child: Text(
+                        errorMessage!,
+                        style: TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    ),
+                  )
+                : Container(),
+            const SizedBox(height: gFormHeight - 20.0),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  widget.controller.goToForgotPasswordFunc();
                 },
+                child: const Text(gForgotPassword),
               ),
-              const SizedBox(height: gFormHeight - 20.0),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    widget.controller.goToForgotPasswordFunc();
-                  },
-                  child: const Text(gForgotPassword),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final isValidForm = formKey.currentState!.validate();
-                    if (isValidForm) {
-                      AuthMethods()
-                          .signInWithEmailPassword(emailTextController.text,
-                              passwordTextController.text)
-                          .then((value) {
-                        print("Logged In Successfully");
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final isValidForm = formKey.currentState!.validate();
+                  if (isValidForm) {
+                    errorMessage = await AuthMethods().signInWithEmailPassword(
+                        emailTextController.text.trim(),
+                        passwordTextController.text.trim());
+                    setState(() {});
+                    if (errorMessage == null) {
+                      print("Logged In Successfully");
 
-                        widget.controller.goToHomePageFunc();
-                        // Get.offAll(()=>const HomeScreen());
-                        // Navigator.pushReplacement(context,
-                        //     MaterialPageRoute(builder: (context) => const HomeScreen()));
-                      }).onError((error, stackTrace) {
-                        print("Error Logging In:  ${error.toString()}");
-                      });
+                      widget.controller.goToHomePageFunc();
                     }
-                  },
-                  child: Text(
-                    gLogin.toUpperCase(),
-                  ),
+
+                    // AuthMethods()
+                    //     .signInWithEmailPassword(emailTextController.text,
+                    //     passwordTextController.text)
+                    //     .then((value) {
+                    //   print("Logged In Successfully");
+                    //
+                    //   widget.controller.goToHomePageFunc();
+                    //   // Get.offAll(()=>const HomeScreen());
+                    //   // Navigator.pushReplacement(context,
+                    //   //     MaterialPageRoute(builder: (context) => const HomeScreen()));
+                    // }).onError((error, stackTrace) {
+                    //
+                    //   print("Error Logging In:  ${error.toString()}");
+                    // });
+                  }
+                },
+                child: Text(
+                  gLogin.toUpperCase(),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
 

@@ -20,7 +20,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final homeScreenController = Get.put(HomeScreenController());
   final chatScreenController = Get.put(ChatScreenController());
 
-
   bool isSearching = false;
   late Stream usersStream;
   bool isAnyUserSelected = false;
@@ -40,8 +39,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   String dropdown1Value = languageList.first;
 
-  handleListTileTap(int index,String userID, String userName, String displayName,
-      String? profilePicURL, String userEmail, String userToken) {
+  handleListTileTap(
+      int index,
+      String userID,
+      String userName,
+      String displayName,
+      String? profilePicURL,
+      String userEmail,
+      String userToken) {
     isAnyUserSelected = true;
     selectedIndex = index;
     chatScreenController.selectedUserID = userID;
@@ -70,38 +75,58 @@ class _ChatScreenState extends State<ChatScreen> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.docs[index];
-                    if (ds["profileURL"] != null) {
-                      return ListTile(
-                        leading: Image.network(ds["profileURL"]),
-                        title: Text(ds["displayname"]),
-                        subtitle: Text(ds["email"]),
-                      );
-                    } else {
-                      return GestureDetector(
-                        onTap: isAnyUserSelected
-                            ? null
-                            : () {
-                                handleListTileTap(
-                                    index,
-                                    ds["id"],
-                                    ds["username"],
-                                    ds["displayname"],
-                                    ds["profileURL"],
-                                    ds["email"],
-                                    ds["token"]
-                                );
-                              },
-                        child: Container(
-                          color: (isAnyUserSelected && selectedIndex == index)
-                              ? Colors.blue.withOpacity(0.4)
-                              : null,
-                          child: ListTile(
-                            leading: Image.asset(gUser_icon_2_image),
-                            title: Text(ds["displayname"]),
-                            subtitle: Text(ds["email"]),
+                    if (ds["username"] != gAccountUserName) {
+                      if (ds["profileURL"] != null) {
+                        return GestureDetector(
+                          onTap: isAnyUserSelected
+                              ? null
+                              : () {
+                                  handleListTileTap(
+                                      index,
+                                      ds["id"],
+                                      ds["username"],
+                                      ds["displayname"],
+                                      ds["profileURL"],
+                                      ds["email"],
+                                      ds["token"]);
+                                },
+                          child: Container(
+                            color: (isAnyUserSelected && selectedIndex == index)
+                                ? Colors.blue.withOpacity(0.4)
+                                : null,
+                            child: ListTile(
+                              leading: Image.network(ds["profileURL"]),
+                              title: Text(ds["displayname"]),
+                              subtitle: Text(ds["email"]),
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        return GestureDetector(
+                          onTap: isAnyUserSelected
+                              ? null
+                              : () {
+                                  handleListTileTap(
+                                      index,
+                                      ds["id"],
+                                      ds["username"],
+                                      ds["displayname"],
+                                      ds["profileURL"],
+                                      ds["email"],
+                                      ds["token"]);
+                                },
+                          child: Container(
+                            color: (isAnyUserSelected && selectedIndex == index)
+                                ? Colors.blue.withOpacity(0.4)
+                                : null,
+                            child: ListTile(
+                              leading: Image.asset(gUser_icon_2_image),
+                              title: Text(ds["displayname"]),
+                              subtitle: Text(ds["email"]),
+                            ),
+                          ),
+                        );
+                      }
                     }
 
                     // Text(ds["displayname"]);
@@ -127,7 +152,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            margin: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -179,8 +204,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                   selectedIndex = -1;
                                   chatScreenController.selectedUserID = null;
                                   chatScreenController.selectedUserName = null;
-                                  chatScreenController.selectedUserDisplayName = null;
-                                  chatScreenController.selectedUserProfilePicURL = null;
+                                  chatScreenController.selectedUserDisplayName =
+                                      null;
+                                  chatScreenController
+                                      .selectedUserProfilePicURL = null;
                                   chatScreenController.selectedUserEmail = null;
                                   chatScreenController.selectedUserToken = null;
                                   setState(() {});
@@ -238,10 +265,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     ? SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () async{
+                          onPressed: () async {
                             await chatScreenController.generateChatRoom();
                             await chatScreenController.inviteUserToChatRoom();
-                            chatScreenController.goToChatMainScreenFunc(dropdown1Value, chatScreenController);
+                            chatScreenController.goToChatMainScreenFunc(
+                                dropdown1Value, chatScreenController);
                           },
                           child: Text(
                             gStartConversation.toUpperCase(),

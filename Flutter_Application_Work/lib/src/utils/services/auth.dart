@@ -14,7 +14,7 @@ class AuthMethods {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future getCurrentUser() async {
-    return await auth.currentUser;
+    return auth.currentUser;
   }
 
   Future signInWithGoogle(BuildContext context) async {
@@ -33,7 +33,6 @@ class AuthMethods {
 
     UserCredential result = await firebaseAuth.signInWithCredential(credential);
 
-
     if (result != null) {
       User userDetails = result.user!;
       SharedPreferenceHelper().saveUserEmail(userDetails.email);
@@ -42,17 +41,16 @@ class AuthMethods {
       SharedPreferenceHelper().saveDisplayName(userDetails.displayName);
       SharedPreferenceHelper()
           .saveUserName(userDetails.email!.replaceAll("@gmail.com", ""));
-    //   print("showing display name");
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // print(prefs.getString("USERDISPLAYNAMEKEY"));
-    // print("display name from method");
-    // print(await SharedPreferenceHelper().getDisplayName());
+      //   print("showing display name");
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // print(prefs.getString("USERDISPLAYNAMEKEY"));
+      // print("display name from method");
+      // print(await SharedPreferenceHelper().getDisplayName());
 
       gAccountEmail = userDetails.email!;
       gAccountName = userDetails.displayName!;
       gAccountUserName = userDetails.email!.replaceAll("@gmail.com", "");
       gUser_icon_image = userDetails.photoURL!;
-
 
       Map<String, dynamic> userInfoMap = {
         "displayname": userDetails.displayName,
@@ -73,76 +71,91 @@ class AuthMethods {
     }
   }
 
-  Future signInWithEmailPassword(String emailId, String passwordText) async {
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  Future<String?> signInWithEmailPassword(
+      String emailId, String passwordText) async {
+    try {
+      final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+      UserCredential result = await firebaseAuth.signInWithEmailAndPassword(
+          email: emailId, password: passwordText);
 
-    UserCredential result = await firebaseAuth.signInWithEmailAndPassword(
-        email: emailId, password: passwordText);
+      if (result != null) {
+        User userDetails = result.user!;
 
-    if (result != null) {
-      User userDetails = result.user!;
+        Map<String, dynamic>? userInfoMap =
+            await DatabaseMethods().getUserById(userDetails.uid);
 
-      Map<String, dynamic>? userInfoMap =
-          await DatabaseMethods().getUserById(userDetails.uid);
+        // print("${userInfoMap.toString()}");
+        // print(userInfoMap?["displayname"]);
+        final displayName = userInfoMap?["displayname"];
+        print(displayName);
+        gAccountEmail = userDetails.email!;
+        gAccountName = displayName;
+        gAccountUserName = userDetails.email!.replaceAll("@gmail.com", "");
+        gUser_icon_image = userInfoMap?["profileURL"];
 
-      // print("${userInfoMap.toString()}");
-      // print(userInfoMap?["displayname"]);
-      final displayName = userInfoMap?["displayname"];
-      print(displayName);
-      gAccountEmail = userDetails.email!;
-      gAccountName = displayName;
-      gAccountUserName = userDetails.email!.replaceAll("@gmail.com", "");
-      gUser_icon_image = userInfoMap?["profileURL"];
+        SharedPreferenceHelper().saveUserEmail(userDetails.email);
+        SharedPreferenceHelper().saveUserId(userDetails.uid);
+        SharedPreferenceHelper().saveUserProfileUrl(userDetails.photoURL);
+        SharedPreferenceHelper().saveDisplayName(displayName);
+        SharedPreferenceHelper()
+            .saveUserName(userDetails.email!.replaceAll("@gmail.com", ""));
 
-
-      SharedPreferenceHelper().saveUserEmail(userDetails.email);
-      SharedPreferenceHelper().saveUserId(userDetails.uid);
-      SharedPreferenceHelper().saveUserProfileUrl(userDetails.photoURL);
-      SharedPreferenceHelper().saveDisplayName(displayName);
-      SharedPreferenceHelper()
-          .saveUserName(userDetails.email!.replaceAll("@gmail.com", ""));
-
-      // print("showing display name");
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // print(prefs.getString("USERDISPLAYNAMEKEY"));
+        // print("showing display name");
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // print(prefs.getString("USERDISPLAYNAMEKEY"));
+      }
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 
-  Future signUpWithEmailPassword(BuildContext context, String displayName,
-      String emailId, String passwordText) async {
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    UserCredential result = await firebaseAuth.createUserWithEmailAndPassword(
-        email: emailId, password: passwordText);
+  Future<String?> signUpWithEmailPassword(BuildContext context,
+      String displayName, String emailId, String passwordText) async {
+    try {
+      final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+      UserCredential result = await firebaseAuth.createUserWithEmailAndPassword(
+          email: emailId, password: passwordText);
 
-    if (result != null) {
-      User userDetails = result.user!;
-      Map<String, dynamic> userInfoMap = {
-        "displayname": displayName,
-        "email": userDetails.email,
-        "id": userDetails.uid,
-        "profileURL": userDetails.photoURL,
-        "username": userDetails.email?.replaceAll("@gmail.com", ""),
-      };
-      // print("${userInfoMap.toString()}");
+      if (result != null) {
+        User userDetails = result.user!;
+        Map<String, dynamic> userInfoMap = {
+          "displayname": displayName,
+          "email": userDetails.email,
+          "id": userDetails.uid,
+          "profileURL": userDetails.photoURL,
+          "username": userDetails.email?.replaceAll("@gmail.com", ""),
+        };
+        // print("${userInfoMap.toString()}");
 
-      DatabaseMethods()
-          .addGoogleUserInfoToDB(userDetails.uid, userInfoMap)
-          .then((value) {
-        print("data added to DB");
-        // Get.to(()=>const LogInScreen());
-        // Navigator.pushReplacement(
-        //     context, MaterialPageRoute(builder: (context) => LogInScreen()));
-      });
+        DatabaseMethods()
+            .addGoogleUserInfoToDB(userDetails.uid, userInfoMap)
+            .then((value) {
+          print("data added to DB");
+          // Get.to(()=>const LogInScreen());
+          // Navigator.pushReplacement(
+          //     context, MaterialPageRoute(builder: (context) => LogInScreen()));
+        });
+      }
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 
   Future signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    await GoogleSignIn().signOut();
     await auth.signOut();
   }
 
-  Future passwordReset(String emailId) async{
+  Future<String?> passwordReset(String emailId) async {
+    try {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: emailId);
+    return null;
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
   }
 }

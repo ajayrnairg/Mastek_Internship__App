@@ -23,17 +23,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController displayNameTextController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  bool errorAppeared = false;
-  String errorMessage = "";
-
-  displayError(int errorCode){
-    if(errorCode == 56852987){
-      errorMessage = "The email address is already in use by another account.";
-    }
-    setState(() {
-
-    });
-  }
+  String? errorMessage;
 
   @override
   void dispose() {
@@ -72,7 +62,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             const SizedBox(height: gFormHeight - 20.0),
             TextFormField(
                 controller: emailTextController,
-                onChanged: (s){errorAppeared = false;},
+                onChanged: (s) {
+                  errorMessage = null;
+                },
                 enableSuggestions: true,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -108,46 +100,58 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 }
               },
             ),
+            (errorMessage != null)
+                ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, gFormHeight, 0, 0),
+                      child: Text(
+                        errorMessage!,
+                        style: TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    ),
+                  )
+                : Container(),
             const SizedBox(height: gFormHeight),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   final isValidForm = formKey.currentState!.validate();
                   if (isValidForm) {
-                    AuthMethods()
-                        .signUpWithEmailPassword(
-                            context,
-                            displayNameTextController.text,
-                            emailTextController.text,
-                            passwordTextController.text)
-                        .then((value) {
-                      print("Created new account");
+                    errorMessage = await AuthMethods().signUpWithEmailPassword(
+                        context,
+                        displayNameTextController.text.trim(),
+                        emailTextController.text.trim(),
+                        passwordTextController.text.trim());
+
+                    setState(() {});
+
+                    if (errorMessage == null) {
+                      print("Creat1ed new account");
                       widget.controller.goToLoginPageFunc();
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => const LogInScreen()));
-                    }).onError((error, stackTrace) {
-                      errorAppeared = true;
-                      displayError(error.hashCode);
-                      print(
-                          "Error while creating new account: ${error.toString()}");
-                    });
+                    }
+
+                    // AuthMethods()
+                    //     .signUpWithEmailPassword(
+                    //         context,
+                    //         displayNameTextController.text,
+                    //         emailTextController.text,
+                    //         passwordTextController.text)
+                    //     .then((value) {
+                    //   print("Created new account");
+                    //   widget.controller.goToLoginPageFunc();
+                    //   // Navigator.push(context,
+                    //   //     MaterialPageRoute(builder: (context) => const LogInScreen()));
+                    // }).onError((error, stackTrace) {
+                    //
+                    //   print(
+                    //       "Error while creating new account: ${error.toString()}");
+                    // });
                   }
                 },
                 child: Text(gSignup.toUpperCase()),
               ),
             ),
-            errorAppeared
-                ? Center(
-                  child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, gFormHeight, 0, 0),
-                      child: Text(
-                        errorMessage,
-                        style: TextStyle(fontSize: 10, color: Colors.red),
-                      ),
-                    ),
-                )
-                : Container()
           ],
         ),
       ),
