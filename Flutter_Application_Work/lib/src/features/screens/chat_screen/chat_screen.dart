@@ -7,6 +7,8 @@ import 'package:rough_app/src/constants/text_strings.dart';
 import 'package:rough_app/src/features/controllers/chat_screen_controller.dart';
 import 'package:rough_app/src/features/controllers/home_screen_controller.dart';
 
+import '../../../constants/colors.dart';
+import '../../../constants/sizes.dart';
 import '../../../utils/services/database.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -139,6 +141,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    var height = size.height;
+    var width = size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(gChatScreenName),
@@ -152,131 +158,171 @@ class _ChatScreenState extends State<ChatScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(20),
+            // margin: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  ),
-                  child: DropdownButtonFormField(
-                    isExpanded: true,
-                    value: dropdown1Value,
-                    items: languageList
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(
-                              e,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (val) async {
-                      dropdown1Value = val!;
-                      // print(translatedTextController.text);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_drop_down_circle,
-                      color: Colors.blue,
+                Padding(
+                  padding: const EdgeInsets.all(gSmallSpace),
+                  child: Container(
+                    height: height * 0.4,
+                    padding: const EdgeInsets.all(gSmallSpace),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(gBorderRadius),
+                      color: gDarkPurple,
                     ),
-                    decoration: const InputDecoration(
-                        labelText: gLangSelectionPage,
-                        floatingLabelStyle: TextStyle(color: Colors.blue),
-                        prefixIconColor: Colors.blue,
-                        prefixIcon: Icon(Icons.sort_by_alpha_rounded),
-                        border: OutlineInputBorder()),
+                    // color: Colors.blue,
+                    child: Center(
+                      child: Text(
+                        gLangSelectionPage,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
                   ),
                 ),
-                Row(
-                  children: [
-                    isSearching
-                        ? Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: InkWell(
-                              onTap: () {
-                                if (isAnyUserSelected) {
-                                  isAnyUserSelected = false;
-                                  selectedIndex = -1;
-                                  chatScreenController.selectedUserID = null;
-                                  chatScreenController.selectedUserName = null;
-                                  chatScreenController.selectedUserDisplayName =
-                                      null;
-                                  chatScreenController
-                                      .selectedUserProfilePicURL = null;
-                                  chatScreenController.selectedUserEmail = null;
-                                  chatScreenController.selectedUserToken = null;
-                                  setState(() {});
-                                } else {
-                                  isSearching = false;
-                                  userSearchController.text = "";
-                                  setState(() {});
-                                }
-                              },
-                              child: Icon(Icons.arrow_back),
+                const SizedBox(height: gDefaultSize),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(gSmallSpace * 2,
+                      gSmallSpace * 2, gSmallSpace * 2, gSmallSpace),
+                  child: Container(
+                    // padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: const BoxDecoration(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(gBorderRadius)),
+                    ),
+                    child: DropdownButtonFormField(
+                      isExpanded: true,
+                      value: dropdown1Value,
+                      items: languageList
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(
+                                e,
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
                             ),
                           )
-                        : Container(),
-                    Expanded(
-                        child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 16),
-                      padding: EdgeInsets.symmetric(horizontal: 18),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey,
-                              width: 1,
-                              style: BorderStyle.solid),
-                          borderRadius: BorderRadius.circular(24)),
-                      child: Row(
-                        children: [
-                          Expanded(
+                          .toList(),
+                      onChanged: (val) async {
+                        dropdown1Value = val!;
+                        // print(translatedTextController.text);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_drop_down_circle,
+                        color: Colors.blue,
+                      ),
+                      decoration: const InputDecoration(
+                          labelText: gLangSelectionPage,
+                          floatingLabelStyle: TextStyle(color: Colors.blue),
+                          prefixIconColor: Colors.blue,
+                          prefixIcon: Icon(Icons.sort_by_alpha_rounded),
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(gSmallSpace * 2,
+                      gSmallSpace, gSmallSpace * 2, gSmallSpace * 2),
+                  child: Row(
+                    children: [
+                      isSearching
+                          ? Padding(
+                              // padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding: const EdgeInsets.all(0),
+                              child: InkWell(
+                                onTap: () {
+                                  if (isAnyUserSelected) {
+                                    isAnyUserSelected = false;
+                                    selectedIndex = -1;
+                                    chatScreenController.selectedUserID = null;
+                                    chatScreenController.selectedUserName =
+                                        null;
+                                    chatScreenController
+                                        .selectedUserDisplayName = null;
+                                    chatScreenController
+                                        .selectedUserProfilePicURL = null;
+                                    chatScreenController.selectedUserEmail =
+                                        null;
+                                    chatScreenController.selectedUserToken =
+                                        null;
+                                    setState(() {});
+                                  } else {
+                                    isSearching = false;
+                                    userSearchController.text = "";
+                                    setState(() {});
+                                  }
+                                },
+                                child: Icon(Icons.arrow_back),
+                              ),
+                            )
+                          : Container(),
+                      Expanded(
+                          child: Container(
+                        // margin: EdgeInsets.symmetric(vertical: 16),
+                        // padding: EdgeInsets.symmetric(horizontal: 18),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey,
+                                width: 1,
+                                style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(gBorderRadius)),
+                        child: Row(
+                          children: [
+                            Expanded(
                               child: TextField(
-                            controller: userSearchController,
-                            style: TextStyle(fontSize: 20),
-                            decoration: InputDecoration(
-                                border: InputBorder.none, hintText: "Username"),
-                          )),
-                          InkWell(
+                                controller: userSearchController,
+                                style: Theme.of(context).textTheme.titleSmall,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Username"),
+                              ),
+                            ),
+                            InkWell(
                               onTap: () {
                                 if (userSearchController.text != "") {
                                   onSearchButtonClick();
                                 }
                               },
-                              child: Icon(Icons.search))
-                        ],
-                      ),
-                    ))
-                  ],
+                              child: Icon(Icons.search),
+                            ),
+                          ],
+                        ),
+                      ))
+                    ],
+                  ),
                 ),
                 // const SizedBox(
                 //   height: 10,
                 // ),
                 isSearching ? searchUsersList() : Container(),
 
-                // Widget you want at the bottom
                 SizedBox(
-                  height: 10,
+                  height: gSmallSpace,
                 ),
-                (isAnyUserSelected)
-                    ? SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await chatScreenController.generateChatRoom();
-                            await chatScreenController.inviteUserToChatRoom();
-                            chatScreenController.goToChatMainScreenFunc(
-                                dropdown1Value, chatScreenController);
-                          },
-                          child: Text(
-                            gStartConversation.toUpperCase(),
+                // Widget you want at the bottom
+
+                Padding(
+                  padding: const EdgeInsets.all(gSmallSpace * 2),
+                  child: (isAnyUserSelected)
+                      ? SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await chatScreenController.generateChatRoom();
+                              await chatScreenController.inviteUserToChatRoom();
+                              chatScreenController.goToChatMainScreenFunc(
+                                  dropdown1Value, chatScreenController);
+                            },
+                            child: Text(
+                              gStartConversation.toUpperCase(),
+                            ),
                           ),
-                        ),
-                      )
-                    : Container(),
+                        )
+                      : Container(),
+                ),
               ],
             ),
           ),

@@ -70,7 +70,7 @@ class _SendChatMessageWidgetState extends State<SendChatMessageWidget> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: RichText(
+                      child: RichText(textAlign: TextAlign.right,
                         text: TextSpan(
                             text: "",
                             style: DefaultTextStyle.of(context).style,
@@ -78,6 +78,7 @@ class _SendChatMessageWidgetState extends State<SendChatMessageWidget> {
                               TextSpan(
                                 text: "$gAccountUserName \n",
                                 style: const TextStyle(
+
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               TextSpan(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:rough_app/src/constants/image_strings.dart';
 import 'package:rough_app/src/constants/text_strings.dart';
+import 'package:rough_app/src/features/screens/chat_screen/chat_screen.dart';
 import 'package:rough_app/src/features/screens/direct_chat_screen/direct_chat_screen.dart';
 import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
 import 'package:rough_app/src/features/screens/rough_screen/rough_screen.dart';
@@ -51,7 +52,9 @@ class MyApp extends StatelessWidget {
               return
                  WelcomeScreen();
                  // SplashScreen();
+              // ChatScreen();
             }
+
           }
       ),
 

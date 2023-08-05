@@ -126,6 +126,7 @@ class _DirectChatMainScreenState extends State<DirectChatMainScreen> {
               ),
               Expanded(
                 flex: 9,
+
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(

@@ -64,6 +64,7 @@ class _ChatMessageContainerMainWidgetState
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: widget.size.height * 0.8,
       child: ListView(

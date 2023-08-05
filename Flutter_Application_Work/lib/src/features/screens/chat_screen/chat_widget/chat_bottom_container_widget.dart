@@ -12,10 +12,10 @@ import 'package:flutter_sound/flutter_sound.dart';
 import '../../../controllers/chat_screen_controller.dart';
 
 class ChatBottomContainerWidget extends StatefulWidget {
-  const ChatBottomContainerWidget({
-    super.key,
-    required this.selectedLanguage,
-    required this.chatScreenController});
+  const ChatBottomContainerWidget(
+      {super.key,
+      required this.selectedLanguage,
+      required this.chatScreenController});
 
   final String selectedLanguage;
   final ChatScreenController chatScreenController;
@@ -29,8 +29,6 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
   bool recordStatus = false;
-
-
 
   @override
   void initState() {
@@ -69,7 +67,8 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
     // await recorder.startRecorder(toFile: '$messageIdAsName.mp4');
     recordStatus = true;
     await recorder.startRecorder(
-        toFile: '$tempPath/$messageIdAsName-Original.wav', codec: Codec.pcm16WAV);
+        toFile: '$tempPath/$messageIdAsName-Original.wav',
+        codec: Codec.pcm16WAV);
   }
 
   Future stop() async {
@@ -83,10 +82,8 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       alignment: Alignment.bottomCenter,
       child: Container(
-
         // height: double.infinity,
         decoration: BoxDecoration(
             // borderRadius: BorderRadius.circular(10.0),
@@ -97,8 +94,12 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
             Expanded(
               child: !recordStatus
                   ? TextField(
-                      controller: widget.chatScreenController
-                          .messageTextEditingController,
+                      textInputAction: TextInputAction.newline,
+                      maxLines: 4,
+                      minLines: 1,
+                      // expands: true,
+                      controller: widget
+                          .chatScreenController.messageTextEditingController,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -146,7 +147,8 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                 if (recorder.isRecording) {
                   // debugPrint("was running");
                   await stop();
-                  widget.chatScreenController.addMessage(widget.selectedLanguage, true);
+                  widget.chatScreenController
+                      .addMessage(widget.selectedLanguage, true);
                   // print("adding message");
                   // if (widget.directChatScreenController.selectedLanguages[0]) {
                   //   await widget.directChatScreenController.buildAndAddMessage(
@@ -165,8 +167,7 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
                   // widget.updateParentUI();
                 } else {
                   // debugPrint("was not running");
-                  await record(
-                      "ChatScreen");
+                  await record("ChatScreen");
                   // debugPrint("now started");
                 }
 
@@ -174,11 +175,11 @@ class _ChatBottomContainerWidgetState extends State<ChatBottomContainerWidget> {
               },
               icon: recordStatus ? Icon(Icons.stop) : Icon(Icons.mic_outlined),
             ),
-
             IconButton(
               icon: Icon(Icons.send),
               onPressed: () {
-                widget.chatScreenController.addMessage(widget.selectedLanguage,false);
+                widget.chatScreenController
+                    .addMessage(widget.selectedLanguage, false);
                 // widget.callback();
 
                 // setState(() {
