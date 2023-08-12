@@ -175,35 +175,71 @@ class ChatScreenController extends GetxController {
 
   inviteUserToChatRoom() async{
     chatRoomID = getChatRoomIdByUsernames(gAccountUserName, selectedUserName!);
-    Map<String,dynamic> roomDetails = {
-      "roomID": chatRoomID,
-      "roomType": "chatRoom"
+    // Map<String,dynamic> roomDetails = {
+    //   "roomID": chatRoomID,
+    //   "roomType": "chatRoom"
+    // };
+    // Map<String,dynamic> senderDetails = {
+    //   "UserID": gAccountID,
+    //   "UserEmail": gAccountEmail,
+    //   "UserName": gAccountUserName,
+    //   "UserDisplayName": gAccountName,
+    //   "UserProfilePic": (gUser_icon_image != null)? gUser_icon_image : "",
+    //   "UserToken": gAccountUserFCMToken
+    // };
+    Map<String,String> notificationDetails = {
+      "title": "ChatRoom Invite",
+      "body": "$gAccountUserName invites you to join his ChatRoom"
     };
-    Map<String,dynamic> senderDetails = {
-      "UserID": gAccountID,
-      "UserEmail": gAccountEmail,
-      "UserName": gAccountUserName,
-      "UserDisplayName": gAccountName,
-      "UserProfilePic": (gUser_icon_image != null)? gUser_icon_image : "",
-      "UserToken": gAccountUserFCMToken
+    Map<String,String> dataInfoMap = {
+      'type': 'chatRoomInvite',
+      'chatRoomID': chatRoomID,
+      'senderID': gAccountID,
+      'senderEmail': gAccountEmail,
+      'senderUserName': gAccountUserName,
+      'senderDisplayName': gAccountName,
+      'senderProfilePic': (gUser_icon_image != null)? gUser_icon_image! : "",
+      'senderToken': gAccountUserFCMToken
     };
-    notificationServices.sendPushNotificationToUser(selectedUserToken!, roomDetails, senderDetails);
+
+    notificationServices.sendPushNotificationToUser(selectedUserToken!, notificationDetails, dataInfoMap);
   }
 
   sendAcceptanceAlert()async{
-    Map<String,dynamic> alertDetails = {
-      "type" : "Acceptance",
-      "message": "$gAccountUserName has joined your room."
+    // Map<String,dynamic> alertDetails = {
+    //   "type" : "Acceptance",
+    //   "message": "$gAccountUserName has joined your room."
+    // };
+    Map<String,String> notificationDetails = {
+      "title": "Acceptance Alert",
+      "body": "$gAccountUserName has joined your room."
     };
-    notificationServices.sendAlertToUser(selectedUserToken!, alertDetails);
+    Map<String,String> dataInfoMap = {
+      'type': 'Alert',
+      'message': '$gAccountUserName has joined your room.'
+    };
+
+  notificationServices.sendPushNotificationToUser(selectedUserToken!, notificationDetails, dataInfoMap);
+    // notificationServices.sendAlertToUser(selectedUserToken!, alertDetails);
   }
 
   sendRejectionAlert()async{
-    Map<String,dynamic> alertDetails = {
-      "type" : "Rejection",
-      "message": "$gAccountUserName has declined your invitation."
+    // Map<String,dynamic> alertDetails = {
+    //   "type" : "Rejection",
+    //   "message": "$gAccountUserName has declined your invitation."
+    // };
+
+    Map<String,String> notificationDetails = {
+      "title": "Rejection Alert",
+      "body": "$gAccountUserName has declined your invitation."
     };
-    notificationServices.sendAlertToUser(selectedUserToken!, alertDetails);
+    Map<String,String> dataInfoMap = {
+      'type': 'Alert',
+      'message': '$gAccountUserName has declined your invitation.'
+    };
+
+    notificationServices.sendPushNotificationToUser(selectedUserToken!, notificationDetails, dataInfoMap);
+    // notificationServices.sendAlertToUser(selectedUserToken!, alertDetails);
   }
 
 

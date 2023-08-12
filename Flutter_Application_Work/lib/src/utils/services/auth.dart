@@ -145,15 +145,21 @@ class AuthMethods {
 
   Future signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userID = (await SharedPreferenceHelper().getUserId())!;
+    await DatabaseMethods().removeTokenDataFromUserInfo(userID);
     prefs.clear();
-    await GoogleSignIn().signOut();
+    try {
+      await GoogleSignIn().signOut();
+    } catch (e) {
+      print("failed to sign out from google: $e");
+    }
     await auth.signOut();
   }
 
   Future<String?> passwordReset(String emailId) async {
     try {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: emailId);
-    return null;
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailId);
+      return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
     }

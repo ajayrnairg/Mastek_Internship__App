@@ -12,7 +12,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:rough_app/src/common_widgets/toast_widget/toast_widget.dart';
 import 'package:rough_app/src/features/screens/chat_screen/receiver_chat_screen.dart';
+import 'package:rough_app/src/features/screens/group_chat_screen/receiver_group_chat_screen.dart';
 import 'package:rough_app/src/utils/services/database.dart';
 
 import '../../constants/text_strings.dart';
@@ -94,8 +96,7 @@ class NotificationServices {
 
       if (Platform.isAndroid) {
         if (message.data["type"] == "Alert") {
-          print("hello");
-          showToast(context, message.data["message"]);
+          ToastWidget().raiseToast(context, message.data["message"]);
         } else {
           localNotificationInit(context, message);
           showNotification(message);
@@ -117,6 +118,18 @@ class NotificationServices {
             senderProfilePic: message.data["senderProfilePic"],
             senderToken: message.data["senderToken"],
           ));
+    } else if (message.data["type"] == "groupInvite") {
+
+      Get.offAll(() => ReceiverGroupChatScreen(
+          groupID: message.data["groupID"],
+          groupName: message.data["groupName"],
+          groupCreatorUserName: message.data["groupCreatorUserName"],
+          senderID: message.data["senderID"],
+          senderEmail: message.data["senderEmail"],
+          senderUserName: message.data["senderUserName"],
+          senderDisplayName: message.data["senderDisplayName"],
+          senderProfilePic: message.data["senderProfilePic"],
+          senderToken: message.data["senderToken"]));
     }
   }
 
@@ -134,28 +147,16 @@ class NotificationServices {
     });
   }
 
-  void sendPushNotificationToUser(
-      String token,
-      Map<String, dynamic> roomDetails,
-      Map<String, dynamic> senderDetails) async {
+  void sendPushNotificationToUser(String token,
+      Map<String, String> notificationDetails, Map dataInfoMap) async {
     var payload = {
       'to': token,
       'priority': 'high',
       'notification': {
-        'title': '${roomDetails["roomType"]} Invite',
-        'body':
-            '${senderDetails["UserName"]} invites you to join his ${roomDetails["roomType"]}'
+        'title': '${notificationDetails["title"]}',
+        'body': '${notificationDetails["body"]}'
       },
-      'data': {
-        'type': '${roomDetails["roomType"]}Invite',
-        '${roomDetails["roomType"]}ID': roomDetails["roomID"],
-        'senderID': '${senderDetails["UserID"]}',
-        'senderEmail': '${senderDetails["UserEmail"]}',
-        'senderUserName': '${senderDetails["UserName"]}',
-        'senderDisplayName': '${senderDetails["UserDisplayName"]}',
-        'senderProfilePic': '${senderDetails["UserProfilePic"]}',
-        'senderToken': '${senderDetails["UserToken"]}',
-      }
+      'data': dataInfoMap
     };
     await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: {
@@ -166,48 +167,64 @@ class NotificationServices {
         body: jsonEncode(payload));
   }
 
-  void sendAlertToUser(
-    String token,
-    Map<String, dynamic> alertDetails,
-  ) async {
-    var payload = {
-      'to': token,
-      'priority': 'high',
-      'notification': {
-        'title': '${alertDetails["type"]} Alert',
-        'body': '${alertDetails["message"]}'
-      },
-      'data': {
-        'type': 'Alert',
-        'message': '${alertDetails["message"]}',
-      }
-    };
-    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization':
-              'key=AAAATNywlaU:APA91bH2pESkNVqvpw6DRJVX_RODsclo14rBLelQhHOmE-O7uqa6NMCUttLGztVJPHsTa5DlwW19eLAPayuFzsrrCOWEoATRllIcQcgCfqEQFBRatEAUuDQ70ofSsKliQMqStC_OLZwf'
-        },
-        body: jsonEncode(payload));
-  }
-
-  void showToast(BuildContext context, String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      gravity: ToastGravity.TOP,
-      toastLength: Toast.LENGTH_SHORT,
-      backgroundColor: Colors.purple,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
+  // void sendPushNotificationToUser(
+  //     String token,
+  //     Map<String, dynamic> roomDetails,
+  //     Map<String, dynamic> senderDetails) async {
+  //   var payload = {
+  //     'to': token,
+  //     'priority': 'high',
+  //     'notification': {
+  //       'title': '${roomDetails["roomType"]} Invite',
+  //       'body':
+  //           '${senderDetails["UserName"]} invites you to join his ${roomDetails["roomType"]}'
+  //     },
+  //     'data': {
+  //       'type': '${roomDetails["roomType"]}Invite',
+  //       '${roomDetails["roomType"]}ID': roomDetails["roomID"],
+  //       'senderID': '${senderDetails["UserID"]}',
+  //       'senderEmail': '${senderDetails["UserEmail"]}',
+  //       'senderUserName': '${senderDetails["UserName"]}',
+  //       'senderDisplayName': '${senderDetails["UserDisplayName"]}',
+  //       'senderProfilePic': '${senderDetails["UserProfilePic"]}',
+  //       'senderToken': '${senderDetails["UserToken"]}',
+  //     }
+  //   };
+  //   await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+  //       headers: {
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //         'Authorization':
+  //             'key=AAAATNywlaU:APA91bH2pESkNVqvpw6DRJVX_RODsclo14rBLelQhHOmE-O7uqa6NMCUttLGztVJPHsTa5DlwW19eLAPayuFzsrrCOWEoATRllIcQcgCfqEQFBRatEAUuDQ70ofSsKliQMqStC_OLZwf'
+  //       },
+  //       body: jsonEncode(payload));
+  // }
+  //
+  // void sendAlertToUser(
+  //   String token,
+  //   Map<String, dynamic> alertDetails,
+  // ) async {
+  //   var payload = {
+  //     'to': token,
+  //     'priority': 'high',
+  //     'notification': {
+  //       'title': '${alertDetails["type"]} Alert',
+  //       'body': '${alertDetails["message"]}'
+  //     },
+  //     'data': {
+  //       'type': 'Alert',
+  //       'message': '${alertDetails["message"]}',
+  //     }
+  //   };
+  //   await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+  //       headers: {
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //         'Authorization':
+  //             'key=AAAATNywlaU:APA91bH2pESkNVqvpw6DRJVX_RODsclo14rBLelQhHOmE-O7uqa6NMCUttLGztVJPHsTa5DlwW19eLAPayuFzsrrCOWEoATRllIcQcgCfqEQFBRatEAUuDQ70ofSsKliQMqStC_OLZwf'
+  //       },
+  //       body: jsonEncode(payload));
+  // }
 
   //Token Management
-  // Future<void> saveToken(String token) async {
-  //   await FirebaseFirestore.instance.collection("UserTokens").doc("User2").set({
-  //     'token': token,
-  //   });
-  // }
 
   Future<String> getDeviceToken() async {
     String? token = await messaging.getToken();

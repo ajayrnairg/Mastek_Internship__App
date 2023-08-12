@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.docs[index];
                     if (ds["username"] != gAccountUserName) {
-                      if (ds["profileURL"] != null) {
+                      if (ds["token"] != "") {
                         return GestureDetector(
                           onTap: isAnyUserSelected
                               ? null
@@ -97,38 +97,17 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ? Colors.blue.withOpacity(0.4)
                                 : null,
                             child: ListTile(
-                              leading: Image.network(ds["profileURL"]),
+                              leading: (ds["profileURL"] != null) ? Image.network(ds["profileURL"]):Image.asset(gUser_icon_2_image),
                               title: Text(ds["displayname"]),
                               subtitle: Text(ds["email"]),
                             ),
                           ),
                         );
                       } else {
-                        return GestureDetector(
-                          onTap: isAnyUserSelected
-                              ? null
-                              : () {
-                                  handleListTileTap(
-                                      index,
-                                      ds["id"],
-                                      ds["username"],
-                                      ds["displayname"],
-                                      ds["profileURL"],
-                                      ds["email"],
-                                      ds["token"]);
-                                },
-                          child: Container(
-                            color: (isAnyUserSelected && selectedIndex == index)
-                                ? Colors.blue.withOpacity(0.4)
-                                : null,
-                            child: ListTile(
-                              leading: Image.asset(gUser_icon_2_image),
-                              title: Text(ds["displayname"]),
-                              subtitle: Text(ds["email"]),
-                            ),
-                          ),
-                        );
+                        return null;
                       }
+                    }else{
+                      return null;
                     }
 
                     // Text(ds["displayname"]);
