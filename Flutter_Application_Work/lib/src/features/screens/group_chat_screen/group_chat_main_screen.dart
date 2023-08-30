@@ -12,6 +12,7 @@ import 'package:rough_app/src/features/screens/group_chat_screen/chat_widget/cha
 import 'package:rough_app/src/features/screens/group_chat_screen/group_chat_screen.dart';
 import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
 
+import '../../../constants/colors.dart';
 import '../../../constants/text_strings.dart';
 import '../../../utils/services/database.dart';
 import 'manages_members_screen.dart';
@@ -164,10 +165,17 @@ class _GroupChatMainScreenState extends State<GroupChatMainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+    var size = MediaQuery.of(context).size;
+    var height = size.height;
+    var width = size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.groupChatScreenController.groupName}"),
+        backgroundColor: isDarkMode ? gDarkPurple : gDarkPurple,
         leading: widget.groupChatScreenController.isAnyMessageSelected
             ? IconButton(
                 onPressed: () {

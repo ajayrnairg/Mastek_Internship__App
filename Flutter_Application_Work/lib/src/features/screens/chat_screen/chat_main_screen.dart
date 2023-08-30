@@ -10,6 +10,8 @@ import 'package:rough_app/src/features/screens/chat_screen/chat_widget/receive_c
 import 'package:rough_app/src/features/screens/chat_screen/chat_widget/send_chat_message_widget.dart';
 import 'package:rough_app/src/utils/services/database.dart';
 
+import '../../../constants/colors.dart';
+
 class ChatMainScreen extends StatefulWidget {
   const ChatMainScreen(
       {super.key,
@@ -82,9 +84,13 @@ class _ChatMainScreenState extends State<ChatMainScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Chat - ${widget.chatScreenController.selectedUserName}"),
+        backgroundColor: isDarkMode ? gDarkPurple : gDarkPurple,
         leading: widget.chatScreenController.isAnyMessageSelected
             ? IconButton(
                 onPressed: () {

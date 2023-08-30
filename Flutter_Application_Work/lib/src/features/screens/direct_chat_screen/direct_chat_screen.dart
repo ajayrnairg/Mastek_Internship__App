@@ -117,6 +117,8 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                 ),
                 decoration: const InputDecoration(
                     labelText: gChooseFirstLang,
+                    prefixIconColor: gDarkPurple,
+
                     prefixIcon: Icon(Icons.sort_by_alpha_rounded),
                     border: OutlineInputBorder()),
               ),
@@ -152,6 +154,8 @@ class _DirectChatScreenState extends State<DirectChatScreen> {
                 ),
                 decoration: const InputDecoration(
                     labelText: gChooseSecondLang,
+                    prefixIconColor: gDarkPurple,
+
                     prefixIcon: Icon(Icons.language_sharp),
                     border: OutlineInputBorder()),
               ),

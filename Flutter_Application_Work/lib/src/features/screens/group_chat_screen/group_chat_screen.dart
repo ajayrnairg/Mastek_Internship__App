@@ -10,6 +10,8 @@ import 'package:rough_app/src/features/screens/group_chat_screen/group_chat_main
 import 'package:rough_app/src/features/screens/home_screen/home_screen.dart';
 import 'package:rough_app/src/utils/services/database.dart';
 
+import '../../../constants/colors.dart';
+import '../../../constants/sizes.dart';
 import '../../controllers/group_chat_screen_controller.dart';
 import '../chat_screen/chat_screen.dart';
 
@@ -86,14 +88,12 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
                 return GestureDetector(
                   onTap: () async {
-
                     setGroupDetailsOnTap(
                             ds["groupID"], ds["groupName"], ds["createdBy"])
                         .then((value) {
                       groupChatScreenController.goToGroupChatMainScreenFunc(
                           dropdown1Value, groupChatScreenController);
                     });
-
                   },
                   child: Container(
                     decoration: const BoxDecoration(
@@ -110,7 +110,9 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                         children: [
                           Icon(
                             Icons.circle,
-                            color: (currentActiveMembers.length > 0) ? Colors.green: Colors.white,
+                            color: (currentActiveMembers.length > 0)
+                                ? Colors.green
+                                : Colors.white,
                             size: 12,
                           ),
                           SizedBox(
@@ -129,7 +131,6 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       },
     );
   }
-
 
   // Widget groupsList() {
   //   return StreamBuilder(
@@ -206,9 +207,17 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
+    var size = MediaQuery.of(context).size;
+    var height = size.height;
+    var width = size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(gGroupChatScreenName),
+        backgroundColor: isDarkMode ? gDarkPurple : gDarkPurple,
         leading: IconButton(
           onPressed: () {
             homeScreenController.goToHomePageFunc();
@@ -230,85 +239,115 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  ),
-                  child: DropdownButtonFormField(
-                    isExpanded: true,
-                    value: dropdown1Value,
-                    items: languageList
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(
-                              e,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (val) async {
-                      dropdown1Value = val!;
-                      // print(translatedTextController.text);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_drop_down_circle,
-                      color: Colors.blue,
+                Padding(
+                  padding: const EdgeInsets.all(gSmallSpace),
+                  child: Container(
+                    height: height * 0.4,
+                    padding: const EdgeInsets.all(gSmallSpace),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(gBorderRadius),
+                      color: gDarkPurple,
                     ),
-                    decoration: const InputDecoration(
-                        labelText: gLangSelectionPage,
-                        floatingLabelStyle: TextStyle(color: Colors.blue),
-                        prefixIconColor: Colors.blue,
-                        prefixIcon: Icon(Icons.sort_by_alpha_rounded),
-                        border: OutlineInputBorder()),
+                    // color: Colors.blue,
+                    child: Center(
+                      child: Text(
+                        gLangSelectionPage,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 16),
-                      padding: EdgeInsets.symmetric(horizontal: 18),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey,
-                              width: 1,
-                              style: BorderStyle.solid),
-                          borderRadius: BorderRadius.circular(24)),
-                      child: TextField(
-                        controller: nameInputController,
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(
-                            border: InputBorder.none, hintText: "Group Name"),
-                      ),
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (nameInputController.text != '') {
-                            groupChatScreenController.createNewGroup(
-                                nameInputController.text.trim());
-                            nameInputController.text = '';
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            "CREATE",
+                Padding(
+                    padding: const EdgeInsets.all(gSmallSpace),
+                    child:
+
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: DropdownButtonFormField(
+                            isExpanded: true,
+                            value: dropdown1Value,
+                            items: languageList
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text(
+                                      e,
+                                      style: Theme.of(context).textTheme.titleSmall,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (val) async {
+                              dropdown1Value = val!;
+                              // print(translatedTextController.text);
+                            },
+                            icon: const Icon(
+                              Icons.arrow_drop_down_circle,
+                              color: gDarkPurple,
+                            ),
+                            decoration: const InputDecoration(
+                                labelText: gLangSelectionPage,
+                                floatingLabelStyle: TextStyle(
+                                  color: gDarkPurple,
+                                ),
+                                prefixIconColor: gDarkPurple,
+
+                                // prefixIconColor: Colors.blue,
+                                prefixIcon: Icon(Icons.sort_by_alpha_rounded),
+                                border: OutlineInputBorder()),
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                groupsList(),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(vertical: 16),
+                                  padding: EdgeInsets.symmetric(horizontal: 18),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                          style: BorderStyle.solid),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: TextField(
+                                    controller: nameInputController,
+                                    style: TextStyle(fontSize: 20),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none, hintText: "Group Name"),
+                                  ),
+                                )),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (nameInputController.text != '') {
+                                    groupChatScreenController.createNewGroup(
+                                        nameInputController.text.trim());
+                                    nameInputController.text = '';
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Text(
+                                    "CREATE",
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        groupsList()
+                      ],
+                    )),
+
               ],
             ),
           ),

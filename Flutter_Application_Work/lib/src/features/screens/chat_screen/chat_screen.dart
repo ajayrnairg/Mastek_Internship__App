@@ -123,10 +123,13 @@ class _ChatScreenState extends State<ChatScreen> {
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(gChatScreenName),
+        backgroundColor: isDarkMode ? gDarkPurple : gDarkPurple,
         leading: IconButton(
           onPressed: () {
             homeScreenController.goToHomePageFunc();
@@ -190,12 +193,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       icon: const Icon(
                         Icons.arrow_drop_down_circle,
-                        color: Colors.blue,
+                        color: gDarkPurple,
                       ),
                       decoration: const InputDecoration(
                           labelText: gLangSelectionPage,
-                          floatingLabelStyle: TextStyle(color: Colors.blue),
-                          prefixIconColor: Colors.blue,
+                          floatingLabelStyle: TextStyle(color: gDarkPurple),
+                          prefixIconColor: gDarkPurple,
                           prefixIcon: Icon(Icons.sort_by_alpha_rounded),
                           border: OutlineInputBorder()),
                     ),
@@ -247,7 +250,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 color: Colors.grey,
                                 width: 1,
                                 style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(gBorderRadius)),
+                            borderRadius: BorderRadius.circular(5.0)),
                         child: Row(
                           children: [
                             Expanded(
